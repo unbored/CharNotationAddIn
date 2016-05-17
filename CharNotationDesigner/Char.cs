@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CharNotationDesigner
 {
-    class Char
+    class Char : ICloneable
     {
         string name;
         string charName;
@@ -46,6 +46,21 @@ namespace CharNotationDesigner
                 strokes.Clear();
                 strokes = new List<Stroke>(value);
             }
+        }
+        public List<Stroke> CloneStrokes()
+        {
+            List<Stroke> result = new List<Stroke>();
+            strokes.ForEach(i => result.Add(i.Clone() as Stroke));
+            return result;
+        }
+
+        public object Clone()
+        {
+            Char result = new Char();
+            result.name = name;
+            result.charName = charName;
+            result.strokes = CloneStrokes();
+            return result;
         }
 
     }

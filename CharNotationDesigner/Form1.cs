@@ -52,14 +52,19 @@ namespace CharNotationDesigner
         private void lstChar_SelectedIndexChanged(object sender, EventArgs e)
         {
             //避免未保存的数据丢失，设置提醒
-            if (charEditor.IsModified && lstChar.SelectedIndex != currentListIndex)
+            if (charEditor.IsModified)
             {
-                DialogResult result = MessageBox.Show("减字尚未保存，确定离开？", "警告", System.Windows.Forms.MessageBoxButtons.YesNo);
-                if (result == System.Windows.Forms.DialogResult.No)
+                if (currentListIndex != lstChar.SelectedIndex)
                 {
-                    lstChar.SelectedIndex = currentListIndex;
-                    return;
+                    DialogResult result = MessageBox.Show("减字尚未保存，是否离开？", "警告", System.Windows.Forms.MessageBoxButtons.YesNo);
+                    if (result == System.Windows.Forms.DialogResult.No)
+                    {
+                        lstChar.SelectedIndex = currentListIndex;
+                        return;
+                    }
                 }
+                else
+                    return;
             }
             currentListIndex = lstChar.SelectedIndex;
             Char charCurrent = lstChar.SelectedItem as Char;
@@ -68,7 +73,7 @@ namespace CharNotationDesigner
             {
                 txtName.Text = (charCurrent).Name;
                 txtCharName.Text = (charCurrent).CharName;
-                charEditor.Strokes = charCurrent.Strokes;
+                charEditor.Strokes = charCurrent.CloneStrokes();
                 charEditor.ResetModifyStatus();
                 picBoxEditor.Invalidate();  //重绘picbox
             }
@@ -109,7 +114,7 @@ namespace CharNotationDesigner
             Char charTemp = new Char();
             charTemp.CharName = txtCharName.Text;
             charTemp.Name = txtName.Text;
-            charTemp.Strokes = charEditor.Strokes;
+            charTemp.Strokes = charEditor.CloneStrokes();
             charEditor.ResetModifyStatus();
             bindingListChar.Add(charTemp);
         }
@@ -137,7 +142,7 @@ namespace CharNotationDesigner
                 return;
             bindingListChar[index].Name = txtName.Text;
             bindingListChar[index].CharName = txtCharName.Text;
-            bindingListChar[index].Strokes = charEditor.Strokes;    //重新分配一份
+            bindingListChar[index].Strokes = charEditor.CloneStrokes();    //重新分配一份
             charEditor.ResetModifyStatus();
             bindingListChar.ResetBindings();    //bindingList内容已更改，以此通知listBox刷新
         }
@@ -155,6 +160,7 @@ namespace CharNotationDesigner
                 {
                     lstChar.SelectedIndex = index;
                     lstChar.Focus();
+                    txtSearch.Text = "";
                 }
                 else
                     toolTipWarning.Show("没找到", txtSearch, 1000);

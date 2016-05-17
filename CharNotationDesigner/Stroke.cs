@@ -11,7 +11,7 @@ namespace CharNotationDesigner
     //笔画名称：横，斜横，无头横，竖，无头竖，撇，捺，无头捺，点，提，点提（氵专用），横折，横折钩，横折弯钩，横折撇，竖勾，竖弯钩
     enum strokeType { HENG, HENG_s, HENG_n, SHU, SHU_n, PIE, NA, NA_n, DIAN, TI, DIANTI, HENGZHE, HENGZHEGOU, HENGZHEWANGOU, HENGZHEPIE, SHUGOU, SHUWANGOU };
 
-    class Stroke
+    class Stroke : ICloneable
     {
         strokeType type;
         string name;
@@ -32,7 +32,7 @@ namespace CharNotationDesigner
         {
             type = s.type;
             name = strokeNames[(int)type];
-            points = new List<PointF>(s.points);
+            points = s.ClonePoints();
             selectedPointIndex = s.selectedPointIndex;
         }
         public Stroke(strokeType t)
@@ -65,6 +65,21 @@ namespace CharNotationDesigner
         {
             get { return selectedPointIndex; }
             set { selectedPointIndex = value; }
+        }
+        List<PointF> ClonePoints()
+        {
+            List<PointF> result = new List<PointF>();
+            points.ForEach(i => result.Add(new PointF(i.X, i.Y)));
+            return result;
+        }
+        public object Clone()
+        {
+            Stroke result = new Stroke();
+            result.type = type;
+            result.name = name;
+            result.points = ClonePoints();
+            result.selectedPointIndex = 0;
+            return result;
         }
 
         #region ============================绘制函数==================================

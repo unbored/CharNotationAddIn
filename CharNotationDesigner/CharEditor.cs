@@ -12,7 +12,7 @@ namespace CharNotationDesigner
     {
         List<Stroke> strokes;
         int selectedStrokeIndex;
-        Bitmap img;
+        //Bitmap img;
         Bitmap imgBackground;
         static List<Stroke> basicStrokes = new List<Stroke>();
         bool modified;
@@ -20,7 +20,7 @@ namespace CharNotationDesigner
         public CharEditor()
         {
             strokes = new List<Stroke>();
-            img = new Bitmap(200, 200);
+            //img = new Bitmap(200, 200);
             imgBackground = new Bitmap(200, 200);
             SetReference("");   //相当于刷新一次全白图像
             selectedStrokeIndex = 0;
@@ -28,8 +28,8 @@ namespace CharNotationDesigner
         }
         public CharEditor(CharEditor t)
         {
-            strokes = new List<Stroke>(t.strokes);
-            img = new Bitmap(t.img);
+            strokes = t.CloneStrokes();
+            //img = new Bitmap(t.img);
             imgBackground = new Bitmap(t.imgBackground);
             selectedStrokeIndex = t.selectedStrokeIndex;
             modified = t.modified;
@@ -37,16 +37,16 @@ namespace CharNotationDesigner
         ~CharEditor()
         {
             strokes.Clear();
-            img.Dispose();
+            //img.Dispose();
             imgBackground.Dispose();
             //if (g != null)
             //    g.Dispose();
         }
 
-        public Bitmap Img
-        {
-            get { return img; }
-        }
+        //public Bitmap Img
+        //{
+        //    get { return img; }
+        //}
         public bool IsModified
         {
             get { return modified; }
@@ -69,6 +69,12 @@ namespace CharNotationDesigner
                 basicStrokes.Clear();
                 basicStrokes = new List<Stroke>(value); 
             }
+        }
+        public List<Stroke> CloneStrokes()
+        {
+            List<Stroke> result = new List<Stroke>();
+            strokes.ForEach(i => result.Add(i.Clone() as Stroke));
+            return result;
         }
 
         public void DrawBones(Graphics g)
@@ -121,7 +127,7 @@ namespace CharNotationDesigner
             Stroke s = basicStrokes.Find(p => p.Type == t);
             if (s != null)
             {
-                strokes.Add(new Stroke(s));
+                strokes.Add(s.Clone() as Stroke);
                 selectedStrokeIndex = strokes.Count - 1;    //选中最后加入的笔画
                 modified = true;
                 //DrawBones();
@@ -195,7 +201,7 @@ namespace CharNotationDesigner
 
         public void SetCurrentPointPos(Point p)
         {
-            strokes[selectedStrokeIndex].Points[strokes[selectedStrokeIndex].SelectedPointIndex] = (PointF)p;
+            strokes[selectedStrokeIndex].Points[strokes[selectedStrokeIndex].SelectedPointIndex] = new PointF(p.X, p.Y);
             modified = true;
             //DrawBones();
         }
