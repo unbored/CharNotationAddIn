@@ -8,58 +8,50 @@ using System.Drawing.Drawing2D;
 
 namespace CharNotationDesigner
 {
-    class CharEditor
+    class CharEditor : Char
     {
-        List<Stroke> strokes;
-        int selectedStrokeIndex;
+        static List<Stroke> basicStrokes = new List<Stroke>();
+        int selectedStrokeIndex;   //指示当前选择的笔画下标
+        int selectedRectIndex;
         //Bitmap img;
         Bitmap imgBackground;
-        static List<Stroke> basicStrokes = new List<Stroke>();
-        bool modified;
+        bool modified;  //指示减字是否有改动
+        int selectedIndicesIndex;   //鼠标选择点时当前选择的编号
 
         public CharEditor()
         {
-            strokes = new List<Stroke>();
-            //img = new Bitmap(200, 200);
             imgBackground = new Bitmap(200, 200);
             SetReference("");   //相当于刷新一次全白图像
-            selectedStrokeIndex = 0;
+            selectedStrokeIndex = -1;
+            selectedRectIndex = -1;
             modified = false;
+            selectedIndicesIndex = -1;
         }
         public CharEditor(CharEditor t)
         {
-            strokes = t.CloneStrokes();
-            //img = new Bitmap(t.img);
             imgBackground = new Bitmap(t.imgBackground);
             selectedStrokeIndex = t.selectedStrokeIndex;
+            selectedRectIndex = t.selectedRectIndex;
             modified = t.modified;
+            selectedIndicesIndex = t.selectedIndicesIndex;
+        }
+        public CharEditor(Char t) : base(t)
+        {
+            imgBackground = new Bitmap(200, 200);
+            SetReference("");   //相当于刷新一次全白图像
+            selectedStrokeIndex = -1;
+            selectedRectIndex = -1;
+            modified = false;
+            selectedIndicesIndex = -1;
         }
         ~CharEditor()
         {
-            strokes.Clear();
-            //img.Dispose();
             imgBackground.Dispose();
-            //if (g != null)
-            //    g.Dispose();
         }
 
-        //public Bitmap Img
-        //{
-        //    get { return img; }
-        //}
         public bool IsModified
         {
             get { return modified; }
-        }
-        public List<Stroke> Strokes
-        {
-            get { return strokes; }
-            set 
-            { 
-                strokes.Clear();
-                strokes = new List<Stroke>(value);
-                selectedStrokeIndex = 0;    //更新笔画后index归零
-            }
         }
         public static List<Stroke> BasicStrokes
         {
@@ -70,31 +62,19 @@ namespace CharNotationDesigner
                 basicStrokes = new List<Stroke>(value); 
             }
         }
-        public List<Stroke> CloneStrokes()
-        {
-            List<Stroke> result = new List<Stroke>();
-            strokes.ForEach(i => result.Add(i.Clone() as Stroke));
-            return result;
-        }
-
         public void DrawBones(Graphics g)
         {
-            //img.Dispose();
-            //img = new Bitmap(imgBackground);    //复制一份底板
-            //Graphics g = Graphics.FromImage(img);   //从img创建
             g.DrawImage(imgBackground, new Point(0, 0));
 
             if (strokes.Count == 0) //没有笔画
             {
-                //g.Dispose();
                 return;
             }
 
             Pen pen = new Pen(Brushes.LightSkyBlue);
+            pen.DashStyle = DashStyle.Solid;
             SolidBrush brush = new SolidBrush(Color.LightSkyBlue);
             pen.Width = 1.0f;
-            Rectangle rectLarge = new Rectangle(new Point(0,0), new Size(5, 5));
-            Rectangle rectsmall = new Rectangle(new Point(0,0), new Size(3, 3));
             PointF[] points;
             foreach (var s in strokes)  //画笔画
             {
@@ -106,20 +86,47 @@ namespace CharNotationDesigner
                     g.FillRectangle(brush, p.X - 1, p.Y - 1, 3, 3);
                 }
             }
-            pen.Color = Color.Orange;
-            brush.Color = Color.Orange;
-            points = new PointF[strokes[selectedStrokeIndex].Points.Count];
-            strokes[selectedStrokeIndex].Points.CopyTo(points);
-            g.DrawLines(pen, points);
-            foreach (var p in strokes[selectedStrokeIndex].Points) //画节点
+            if (isMain) //绘制矩形框
             {
-                g.FillRectangle(brush, p.X - 1, p.Y - 1, 3, 3);
+                pen.DashStyle = DashStyle.Dash;
+                pen.Color = Color.DarkOliveGreen;    //深绿色
+                brush.Color = Color.DarkOliveGreen;
+                float leftX = Math.Min(rect.corners[0].X, rect.corners[1].X);
+                float leftY = Math.Min(rect.corners[0].Y, rect.corners[1].Y);
+                float sizeX = Math.Abs(rect.corners[1].X - rect.corners[0].X);
+                float sizeY = Math.Abs(rect.corners[1].Y - rect.corners[0].Y);
+                g.DrawRectangle(pen, leftX, leftY, sizeX, sizeY);
+                foreach (var p in rect.corners)
+                {
+                    g.FillRectangle(brush, p.X - 1, p.Y - 1, 3, 3);
+                }
+                if (selectedRectIndex >= 0)
+                    g.FillRectangle(brush, rect.corners[selectedRectIndex].X - 2, rect.corners[selectedRectIndex].Y - 2, 5, 5);
+                if (isComplex)
+                {
+                    //g.DrawLine(pen, leftX + sizeX / 2 - 5, leftY, leftX + sizeX / 2 - 5, leftY + sizeY);
+                    //g.DrawLine(pen, leftX + sizeX / 2 + 5, leftY, leftX + sizeX / 2 + 5, leftY + sizeY);
+                    g.DrawLine(pen, leftX + sizeX / 2, leftY, leftX + sizeX / 2, leftY + sizeY);
+                }
             }
-            PointF selectedPoint = strokes[selectedStrokeIndex].Points[strokes[selectedStrokeIndex].SelectedPointIndex];
-            g.FillRectangle(brush, selectedPoint.X - 2, selectedPoint.Y - 2, 5, 5);
+
+            if (selectedStrokeIndex >= 0 && selectedStrokeIndex < strokes.Count)
+            {
+                pen.DashStyle = DashStyle.Solid;
+                pen.Color = Color.Orange;
+                brush.Color = Color.Orange;
+                points = new PointF[strokes[selectedStrokeIndex].Points.Count];
+                strokes[selectedStrokeIndex].Points.CopyTo(points);
+                g.DrawLines(pen, points);
+                foreach (var p in strokes[selectedStrokeIndex].Points) //画节点
+                {
+                    g.FillRectangle(brush, p.X - 1, p.Y - 1, 3, 3);
+                }
+                PointF selectedPoint = strokes[selectedStrokeIndex].Points[strokes[selectedStrokeIndex].SelectedPointIndex];
+                g.FillRectangle(brush, selectedPoint.X - 2, selectedPoint.Y - 2, 5, 5);
+            }
             pen.Dispose();
             brush.Dispose();
-            //g.Dispose();
         }
 
         public void AddStroke(strokeType t)
@@ -130,20 +137,20 @@ namespace CharNotationDesigner
                 strokes.Add(s.Clone() as Stroke);
                 selectedStrokeIndex = strokes.Count - 1;    //选中最后加入的笔画
                 modified = true;
-                //DrawBones();
             }
         }
 
         public void RemoveStroke()
         {
-            if (strokes.Count > 0)
-                strokes.RemoveAt(selectedStrokeIndex);
-            if (strokes.Count == 0)
-                selectedStrokeIndex = -1;
-            else if (selectedStrokeIndex > 0)
-                selectedStrokeIndex--;
-            modified = true;
-            //DrawBones();
+            if (selectedStrokeIndex != -1 && selectedStrokeIndex != strokes.Count)
+            {
+                if (strokes.Count > 0)
+                {
+                    strokes.RemoveAt(selectedStrokeIndex);
+                    selectedStrokeIndex = -1;
+                }
+                modified = true;
+            }
         }
 
         public void ClearStrokes()
@@ -151,7 +158,6 @@ namespace CharNotationDesigner
             strokes.Clear();
             selectedStrokeIndex = -1;
             modified = true;
-            //DrawBones();
         }
         /// <summary>
         /// 指定用作参考的文字
@@ -160,11 +166,11 @@ namespace CharNotationDesigner
         /// <param name="text"></param>
         public void SetReference(string text)
         {
-            Font font = new Font("华文中宋", 160);
+            Font font = new Font("华文中宋", 155);
             Graphics g = Graphics.FromImage(imgBackground);   //从img创建
             g.Clear(Color.White);
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
-            g.DrawString(text, font, Brushes.LightGray, -45, -27);
+            g.DrawString(text, font, Brushes.LightGray, -40, -27);
             g.Dispose();
         }
 
@@ -172,43 +178,89 @@ namespace CharNotationDesigner
         {
             if (strokes.Count > 0)
                 selectedStrokeIndex = (selectedStrokeIndex - 1 + strokes.Count) % strokes.Count;
-            //DrawBones();
         }
         public void NextStroke()
         {
             if (strokes.Count > 0)
                 selectedStrokeIndex = (selectedStrokeIndex + 1) % strokes.Count;
-            //DrawBones();
         }
-
+        /// <summary>
+        /// 记录下所有在固定范围内的点的坐标，并依次选取
+        /// </summary>
+        /// <param name="p"></param>
         public void SelectNearestPoint(Point p)
         {
-            double minDist = Double.MaxValue;
-            int index = strokes[selectedStrokeIndex].SelectedPointIndex;
-            for (int i = 0; i < strokes[selectedStrokeIndex].Points.Count; i++)
+            List<Point> indices = new List<Point>();    //借用Point结构来记录下标
+            PointF item;
+            double distance;
+            //将所有在范围内的点记录下来
+            for (int i = 0; i < strokes.Count; i++)
             {
-                PointF item = strokes[selectedStrokeIndex].Points[i];
-                double distance = Math.Sqrt(Math.Pow(item.X - p.X, 2) + Math.Pow(item.Y - p.Y, 2));
-                if (distance < minDist)
+                for (int j = 0; j < strokes[i].Points.Count; j++)
                 {
-                    minDist = distance;
-                    index = i;
+                    item = strokes[i].Points[j];
+                    distance = Math.Sqrt(Math.Pow(item.X - p.X, 2) + Math.Pow(item.Y - p.Y, 2));
+                    if (distance < 10)   //此范围内的点均取
+                    {
+                        indices.Add(new Point(i, j));
+                    }
                 }
             }
-            strokes[selectedStrokeIndex].SelectedPointIndex = index;
-            //DrawBones();
-        }
+            if (isMain) //主指法，还要控制内容框
+            {
+                item = rect.corners[0];
+                distance = Math.Sqrt(Math.Pow(item.X - p.X, 2) + Math.Pow(item.Y - p.Y, 2));
+                if (distance < 10)   //此范围内的点均取
+                    indices.Add(new Point(strokes.Count, 0));
+                item = rect.corners[1];
+                distance = Math.Sqrt(Math.Pow(item.X - p.X, 2) + Math.Pow(item.Y - p.Y, 2));
+                if (distance < 10)   //此范围内的点均取
+                    indices.Add(new Point(strokes.Count, 1));
+            }
+            //没有找到任何点
+            if (indices.Count == 0)
+            {
+                selectedStrokeIndex = -1;
+                return;
+            }
+            //因点集合改变而超出范围则置0
+            if (++selectedIndicesIndex >= indices.Count)
+                selectedIndicesIndex = 0;
 
+            selectedStrokeIndex = indices[selectedIndicesIndex].X;
+
+            if (selectedStrokeIndex == strokes.Count)   //选中了内容框
+            {
+                selectedRectIndex = indices[selectedIndicesIndex].Y;
+            }
+            else
+            {
+                strokes[selectedStrokeIndex].SelectedPointIndex = indices[selectedIndicesIndex].Y;
+                selectedRectIndex = -1;
+            }
+        }
+        /// <summary>
+        /// 设置当前选中的点的坐标
+        /// </summary>
+        /// <param name="p"></param>
         public void SetCurrentPointPos(Point p)
         {
-            strokes[selectedStrokeIndex].Points[strokes[selectedStrokeIndex].SelectedPointIndex] = new PointF(p.X, p.Y);
-            modified = true;
-            //DrawBones();
+            if (selectedStrokeIndex >= 0)
+            {
+                if (selectedStrokeIndex < strokes.Count)
+                    strokes[selectedStrokeIndex].Points[strokes[selectedStrokeIndex].SelectedPointIndex] = new PointF(p.X, p.Y);
+                else if (selectedStrokeIndex == strokes.Count)
+                    rect.corners[selectedRectIndex] = new PointF(p.X, p.Y);
+                modified = true;
+            }
         }
-
+        /// <summary>
+        /// 将修改状态重置为未修改
+        /// </summary>
         public void ResetModifyStatus()
         {
             modified = false;
         }
+
     }
 }

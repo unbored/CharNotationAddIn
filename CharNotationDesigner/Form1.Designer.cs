@@ -48,8 +48,8 @@
             this.picBoxEditor = new System.Windows.Forms.PictureBox();
             this.toolTipWarning = new System.Windows.Forms.ToolTip(this.components);
             this.txtSearch = new System.Windows.Forms.TextBox();
-            this.btnPrev = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.lbRef = new System.Windows.Forms.Label();
+            this.txtRef = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.picBoxEditor)).BeginInit();
             this.SuspendLayout();
             // 
@@ -94,6 +94,7 @@
             this.chkMain.Text = "主指法";
             this.toolTip1.SetToolTip(this.chkMain, "是否主指法。\r\n主指法指的是与弦号一起使用的右手指法，如勾、蠲、轮等。");
             this.chkMain.UseVisualStyleBackColor = true;
+            this.chkMain.CheckedChanged += new System.EventHandler(this.chkMain_CheckedChanged);
             // 
             // lbName
             // 
@@ -108,6 +109,7 @@
             // chkComplex
             // 
             this.chkComplex.AutoSize = true;
+            this.chkComplex.Enabled = false;
             this.chkComplex.Location = new System.Drawing.Point(146, 51);
             this.chkComplex.Name = "chkComplex";
             this.chkComplex.Size = new System.Drawing.Size(72, 16);
@@ -115,6 +117,7 @@
             this.chkComplex.Text = "双弦指法";
             this.toolTip1.SetToolTip(this.chkComplex, "是否双弦指法。\r\n双弦指法指的是需要标记两根弦的指法，如撮、泼等。\r\n双弦指法必然是主指法。");
             this.chkComplex.UseVisualStyleBackColor = true;
+            this.chkComplex.CheckedChanged += new System.EventHandler(this.chkComplex_CheckedChanged);
             // 
             // comboStrokes
             // 
@@ -249,33 +252,30 @@
             this.txtSearch.TabIndex = 11;
             this.txtSearch.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSearch_KeyPress);
             // 
-            // btnPrev
+            // lbRef
             // 
-            this.btnPrev.Location = new System.Drawing.Point(82, 341);
-            this.btnPrev.Name = "btnPrev";
-            this.btnPrev.Size = new System.Drawing.Size(49, 23);
-            this.btnPrev.TabIndex = 15;
-            this.btnPrev.Text = "上一笔";
-            this.btnPrev.UseVisualStyleBackColor = true;
-            this.btnPrev.Click += new System.EventHandler(this.btnPrev_Click);
+            this.lbRef.AutoSize = true;
+            this.lbRef.Location = new System.Drawing.Point(80, 346);
+            this.lbRef.Name = "lbRef";
+            this.lbRef.Size = new System.Drawing.Size(65, 12);
+            this.lbRef.TabIndex = 15;
+            this.lbRef.Text = "参考汉字：";
             // 
-            // button1
+            // txtRef
             // 
-            this.button1.Location = new System.Drawing.Point(130, 341);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(49, 23);
-            this.button1.TabIndex = 16;
-            this.button1.Text = "下一笔";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.txtRef.Location = new System.Drawing.Point(138, 343);
+            this.txtRef.Name = "txtRef";
+            this.txtRef.Size = new System.Drawing.Size(36, 21);
+            this.txtRef.TabIndex = 16;
+            this.txtRef.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtRef_KeyPress);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(331, 409);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.btnPrev);
+            this.Controls.Add(this.txtRef);
+            this.Controls.Add(this.lbRef);
             this.Controls.Add(this.txtSearch);
             this.Controls.Add(this.btnModChar);
             this.Controls.Add(this.picBoxEditor);
@@ -325,8 +325,8 @@
         private System.Windows.Forms.Button btnModChar;
         private System.Windows.Forms.ToolTip toolTipWarning;
         private System.Windows.Forms.TextBox txtSearch;
-        private System.Windows.Forms.Button btnPrev;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label lbRef;
+        private System.Windows.Forms.TextBox txtRef;
     }
 }
 

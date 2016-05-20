@@ -27,15 +27,7 @@ namespace CharNotationDesigner
             lstChar.DisplayMember = "CharName";
 
             //准备编辑区域内容
-            List<Stroke> basicStrokes = new List<Stroke>(); //基础笔画部件
-            Stroke strokeTemp = new Stroke(strokeType.HENG);
-            strokeTemp.Points.Add(new PointF(10.0f, 100.0f));
-            strokeTemp.Points.Add(new PointF(90.0f, 100.0f));
-            basicStrokes.Add(strokeTemp);
-            strokeTemp = new Stroke(strokeType.SHU);
-            strokeTemp.Points.Add(new PointF(100.0f, 10.0f));
-            strokeTemp.Points.Add(new PointF(100.0f, 90.0f));
-            basicStrokes.Add(strokeTemp);
+            List<Stroke> basicStrokes = BasicStrokesInit(); //基础笔画部件
             //将数据绑定到combo上。此处无需新建binding，因为该数据不会更新
             comboStrokes.DataSource = basicStrokes;
             comboStrokes.DisplayMember = "name";
@@ -73,7 +65,9 @@ namespace CharNotationDesigner
             {
                 txtName.Text = (charCurrent).Name;
                 txtCharName.Text = (charCurrent).CharName;
-                charEditor.Strokes = charCurrent.CloneStrokes();
+                charEditor = new CharEditor(charCurrent.Clone() as Char);
+                //charEditor.Strokes = charCurrent.CloneStrokes();
+                //charEditor.Rect = charCurrent.CloneRect();
                 charEditor.ResetModifyStatus();
                 picBoxEditor.Invalidate();  //重绘picbox
             }
@@ -111,11 +105,12 @@ namespace CharNotationDesigner
                 }
             }
             //新建减字
-            Char charTemp = new Char();
+            charEditor.ResetModifyStatus();
+            Char charTemp = charEditor.Clone() as Char;
             charTemp.CharName = txtCharName.Text;
             charTemp.Name = txtName.Text;
-            charTemp.Strokes = charEditor.CloneStrokes();
-            charEditor.ResetModifyStatus();
+            //charTemp.Strokes = charEditor.CloneStrokes();
+            //charTemp.Rect = charEditor.CloneRect();
             bindingListChar.Add(charTemp);
         }
         /// <summary>
@@ -140,9 +135,9 @@ namespace CharNotationDesigner
             int index = bindingListChar.IndexOf(lstChar.SelectedItem as Char);
             if (index == -1)    //列表中不存在对应减字（列表为空）
                 return;
+            bindingListChar[index] = charEditor.Clone() as Char;
             bindingListChar[index].Name = txtName.Text;
             bindingListChar[index].CharName = txtCharName.Text;
-            bindingListChar[index].Strokes = charEditor.CloneStrokes();    //重新分配一份
             charEditor.ResetModifyStatus();
             bindingListChar.ResetBindings();    //bindingList内容已更改，以此通知listBox刷新
         }
@@ -217,27 +212,8 @@ namespace CharNotationDesigner
             picBoxEditor.Invalidate();
         }
         /// <summary>
-        /// 选择上一个笔画
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnPrev_Click(object sender, EventArgs e)
-        {
-            charEditor.PreviousStroke();
-            picBoxEditor.Invalidate();
-        }
-        /// <summary>
-        /// 选择下一个笔画
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void button1_Click(object sender, EventArgs e)
-        {
-            charEditor.NextStroke();
-            picBoxEditor.Invalidate();
-        }
-        /// <summary>
         /// 按下鼠标按键
+        /// 只在第一次检测到按下时执行临近点搜索
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -245,9 +221,12 @@ namespace CharNotationDesigner
         {
             if (e.Button == System.Windows.Forms.MouseButtons.Left)
             {
-                mouseDown = true;
-                charEditor.SelectNearestPoint(e.Location);
-                picBoxEditor.Invalidate();
+                if (!mouseDown)
+                {
+                    charEditor.SelectNearestPoint(e.Location);
+                    picBoxEditor.Invalidate();
+                    mouseDown = true;
+                }
             }
         }
         /// <summary>
@@ -259,7 +238,6 @@ namespace CharNotationDesigner
         {
             if (e.Button == System.Windows.Forms.MouseButtons.Left)
             {
-
                 mouseDown = false;
             }
         }
@@ -285,6 +263,49 @@ namespace CharNotationDesigner
         {
             //绘制笔画骨骼
             charEditor.DrawBones(e.Graphics);
+        }
+
+        private void chkMain_CheckedChanged(object sender, EventArgs e)
+        {
+            chkComplex.Enabled = chkMain.Checked;
+            charEditor.IsMain = chkMain.Checked;
+            picBoxEditor.Invalidate();
+        }
+
+        private void txtRef_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                charEditor.SetReference(txtRef.Text);
+                picBoxEditor.Invalidate();
+            }
+        }
+
+        private void chkComplex_CheckedChanged(object sender, EventArgs e)
+        {
+            charEditor.IsComplex = chkComplex.Checked;
+            picBoxEditor.Invalidate();
+        }
+        /// <summary>
+        /// 初始化基础笔画
+        /// </summary>
+        /// <returns></returns>
+        private List<Stroke> BasicStrokesInit()
+        {
+            List<Stroke> result = new List<Stroke>();
+            Stroke newStroke;
+
+            newStroke = new Stroke(strokeType.横);
+            newStroke.Points.Add(new PointF(10.0f, 100.0f));
+            newStroke.Points.Add(new PointF(190.0f, 100.0f));
+            result.Add(newStroke);
+
+            newStroke = new Stroke(strokeType.竖);
+            newStroke.Points.Add(new PointF(100.0f, 10.0f));
+            newStroke.Points.Add(new PointF(100.0f, 190.0f));
+            result.Add(newStroke);
+
+            return result;
         }
     }
 }

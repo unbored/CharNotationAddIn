@@ -9,7 +9,7 @@ using System.Drawing.Drawing2D;
 namespace CharNotationDesigner
 {
     //笔画名称：横，斜横，无头横，竖，无头竖，撇，捺，无头捺，点，提，点提（氵专用），横折，横折钩，横折弯钩，横折撇，竖勾，竖弯钩
-    enum strokeType { HENG, HENG_s, HENG_n, SHU, SHU_n, PIE, NA, NA_n, DIAN, TI, DIANTI, HENGZHE, HENGZHEGOU, HENGZHEWANGOU, HENGZHEPIE, SHUGOU, SHUWANGOU };
+    enum strokeType { 横, 斜横, 无头横, 竖, 无头竖, 撇, 捺, 无头捺, 点, 提, 点提, 横折, 横折钩, 横折弯钩, 横折撇, 竖勾, 竖弯钩 };
 
     class Stroke : ICloneable
     {
@@ -18,27 +18,25 @@ namespace CharNotationDesigner
         List<PointF> points;
         int selectedPointIndex;
         float widththin, widththick;
-
-        static string[] strokeNames = {"横","斜横","无头横","竖","无头竖","撇","捺","无头捺","点","提","点提（氵专用）","横折","横折钩","横折弯钩","横折撇","竖勾","竖弯钩"};
-        
+    
         public Stroke()
         {
-            type = strokeType.HENG;
-            name = strokeNames[(int)type];
+            type = strokeType.横;
+            name = Enum.GetName(typeof(strokeType), type);
             points = new List<PointF>();
             selectedPointIndex = 0;
         }
         public Stroke(Stroke s)
         {
             type = s.type;
-            name = strokeNames[(int)type];
+            name = Enum.GetName(typeof(strokeType), type);
             points = s.ClonePoints();
             selectedPointIndex = s.selectedPointIndex;
         }
         public Stroke(strokeType t)
         {
             type = t;
-            name = strokeNames[(int)type];
+            name = Enum.GetName(typeof(strokeType), type);
             points = new List<PointF>();
             selectedPointIndex = 0;
         }
@@ -81,7 +79,6 @@ namespace CharNotationDesigner
             result.selectedPointIndex = 0;
             return result;
         }
-
         #region ============================绘制函数==================================
         public void setWidth(float thin, float thick)
         {
@@ -95,52 +92,52 @@ namespace CharNotationDesigner
         {
             switch (type)
             {
-                case strokeType.HENG:
+                case strokeType.横:
                     DrawHeng(g);
                     break;
-                case strokeType.SHU:
+                case strokeType.竖:
                     DrawShu(g);
                     break;
-                case strokeType.PIE:
+                case strokeType.撇:
                     DrawPie(g);
                     break;
-                case strokeType.NA:
+                case strokeType.捺:
                     DrawNa(g);
                     break;
-                case strokeType.DIAN:
+                case strokeType.点:
                     DrawDian(g);
                     break;
-                case strokeType.TI:
+                case strokeType.提:
                     DrawTi(g);
                     break;
-                case strokeType.DIANTI:
+                case strokeType.点提:
                     DrawDianti(g);
                     break;
-                case strokeType.HENGZHEGOU:
+                case strokeType.横折钩:
                     /*widththick *= 1.2f;*/
                     DrawHengzhegou(g);
                     break;
-                case strokeType.HENGZHE:
+                case strokeType.横折:
                     DrawHengzhe(g);
                     break;
-                case strokeType.HENGZHEPIE:
+                case strokeType.横折撇:
                     DrawHengzhepie(g);
                     break;
-                case strokeType.SHUWANGOU:
+                case strokeType.竖弯钩:
                     widththick *= 0.8f;
                     DrawShuwangou(g);
                     break;
-                case strokeType.HENGZHEWANGOU:
+                case strokeType.横折弯钩:
                     widththick *= 0.8f;
                     DrawHengzhewangou(g);
                     break;
-                case strokeType.HENG_n:
+                case strokeType.无头横:
                     DrawHeng_n(g);
                     break;
-                case strokeType.SHU_n:
+                case strokeType.无头竖:
                     DrawShu_n(g);
                     break;
-                case strokeType.NA_n:
+                case strokeType.无头捺:
                     DrawNa_n(g);
                     break;
                 default:
