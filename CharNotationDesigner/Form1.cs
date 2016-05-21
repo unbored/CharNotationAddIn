@@ -14,6 +14,7 @@ namespace CharNotationDesigner
     {
         //公共变量
         BindingList<Char> bindingListChar;  //显示在左边的减字列表
+        List<Stroke> basicStrokes;
         CharEditor charEditor;
         int currentListIndex;
         bool mouseDown; //记录鼠标是否按下
@@ -27,12 +28,13 @@ namespace CharNotationDesigner
             lstChar.DisplayMember = "CharName";
 
             //准备编辑区域内容
-            List<Stroke> basicStrokes = BasicStrokesInit(); //基础笔画部件
+            basicStrokes = BasicStrokesInit(); //基础笔画部件
             //将数据绑定到combo上。此处无需新建binding，因为该数据不会更新
             comboStrokes.DataSource = basicStrokes;
-            comboStrokes.DisplayMember = "name";
+            comboStrokes.DisplayMember = "type";
 
-            CharEditor.BasicStrokes = basicStrokes; //将笔画信息传入chareditor
+            //CharEditor.BasicStrokes = basicStrokes; //将笔画信息传入chareditor
+            Stroke.setWidth(3, 15);
             charEditor = new CharEditor();
             mouseDown = false;
         }
@@ -48,7 +50,8 @@ namespace CharNotationDesigner
             {
                 if (currentListIndex != lstChar.SelectedIndex)
                 {
-                    DialogResult result = MessageBox.Show("减字尚未保存，是否离开？", "警告", System.Windows.Forms.MessageBoxButtons.YesNo);
+                    DialogResult result = MessageBox.Show("减字尚未保存，是否离开？", "警告", 
+                        System.Windows.Forms.MessageBoxButtons.YesNo);
                     if (result == System.Windows.Forms.DialogResult.No)
                     {
                         lstChar.SelectedIndex = currentListIndex;
@@ -63,12 +66,21 @@ namespace CharNotationDesigner
             //列表非空时必然会选择其中一项；但要避免出现空列表的情况
             if (charCurrent != null)    
             {
-                txtName.Text = (charCurrent).Name;
-                txtCharName.Text = (charCurrent).CharName;
                 charEditor = new CharEditor(charCurrent.Clone() as Char);
                 //charEditor.Strokes = charCurrent.CloneStrokes();
                 //charEditor.Rect = charCurrent.CloneRect();
                 charEditor.ResetModifyStatus();
+
+                txtName.Text = charEditor.Name;
+                txtCharName.Text = charEditor.CharName;
+                numUDSegment.Value = (Decimal)charEditor.Segment;
+                chkMain.Checked = charEditor.IsMain;
+                chkComplex.Checked = charEditor.IsComplex;
+                chkRestrictTop.Checked = charEditor.RestrictTop;
+                chkRestrictBottom.Checked = charEditor.RestrictBottom;
+                chkRectTop.Checked = charEditor.RestrictTopRect;
+                chkRectBottom.Checked = charEditor.RestrictBottomRect;
+
                 picBoxEditor.Invalidate();  //重绘picbox
             }
         }
@@ -104,13 +116,12 @@ namespace CharNotationDesigner
                     return;
                 }
             }
-            //新建减字
+            //新建减字，必须使用深复制
+            charEditor.CharName = txtCharName.Text;
+            charEditor.Name = txtName.Text;
+            charEditor.Segment = (int)numUDSegment.Value;
             charEditor.ResetModifyStatus();
             Char charTemp = charEditor.Clone() as Char;
-            charTemp.CharName = txtCharName.Text;
-            charTemp.Name = txtName.Text;
-            //charTemp.Strokes = charEditor.CloneStrokes();
-            //charTemp.Rect = charEditor.CloneRect();
             bindingListChar.Add(charTemp);
         }
         /// <summary>
@@ -135,9 +146,10 @@ namespace CharNotationDesigner
             int index = bindingListChar.IndexOf(lstChar.SelectedItem as Char);
             if (index == -1)    //列表中不存在对应减字（列表为空）
                 return;
+            charEditor.Name = txtName.Text;
+            charEditor.CharName = txtCharName.Text;
+            charEditor.Segment = (int)numUDSegment.Value;
             bindingListChar[index] = charEditor.Clone() as Char;
-            bindingListChar[index].Name = txtName.Text;
-            bindingListChar[index].CharName = txtCharName.Text;
             charEditor.ResetModifyStatus();
             bindingListChar.ResetBindings();    //bindingList内容已更改，以此通知listBox刷新
         }
@@ -186,10 +198,12 @@ namespace CharNotationDesigner
             if (comboStrokes.SelectedItem == null)
             {
                 toolTipWarning.Show("请先选择一个笔画", comboStrokes, 1000);
+                return;
             }
-            charEditor.AddStroke((comboStrokes.SelectedItem as Stroke).Type);
+
+            Stroke s = comboStrokes.SelectedItem as Stroke;
+            charEditor.AddStroke(s);
             picBoxEditor.Invalidate();  //重绘picbox
-            //picBoxEditor.Refresh();
         }
         /// <summary>
         /// 删除笔画
@@ -261,6 +275,10 @@ namespace CharNotationDesigner
         /// <param name="e"></param>
         private void picBoxEditor_Paint(object sender, PaintEventArgs e)
         {
+            //绘制背景（相当于刷新）
+            charEditor.DrawBackground(e.Graphics);
+            //绘制笔画
+            charEditor.DrawStrokes(e.Graphics);
             //绘制笔画骨骼
             charEditor.DrawBones(e.Graphics);
         }
@@ -269,6 +287,8 @@ namespace CharNotationDesigner
         {
             chkComplex.Enabled = chkMain.Checked;
             charEditor.IsMain = chkMain.Checked;
+            chkRectTop.Enabled = chkMain.Checked;
+            chkRectBottom.Enabled = chkMain.Checked;
             picBoxEditor.Invalidate();
         }
 
@@ -280,12 +300,32 @@ namespace CharNotationDesigner
                 picBoxEditor.Invalidate();
             }
         }
-
         private void chkComplex_CheckedChanged(object sender, EventArgs e)
         {
             charEditor.IsComplex = chkComplex.Checked;
             picBoxEditor.Invalidate();
         }
+
+        private void chkRestrictTop_CheckedChanged(object sender, EventArgs e)
+        {
+            charEditor.RestrictTop = chkRestrictTop.Checked;
+        }
+
+        private void chkRestrictBottom_CheckedChanged(object sender, EventArgs e)
+        {
+            charEditor.RestrictBottom = chkRestrictBottom.Checked;
+        }
+
+        private void chkRectTop_CheckedChanged(object sender, EventArgs e)
+        {
+            charEditor.RestrictTopRect = chkRectTop.Checked;
+        }
+
+        private void chkRectBottom_CheckedChanged(object sender, EventArgs e)
+        {
+            charEditor.RestrictBottomRect = chkRectBottom.Checked;
+        }
+
         /// <summary>
         /// 初始化基础笔画
         /// </summary>
@@ -297,15 +337,61 @@ namespace CharNotationDesigner
 
             newStroke = new Stroke(strokeType.横);
             newStroke.Points.Add(new PointF(10.0f, 100.0f));
-            newStroke.Points.Add(new PointF(190.0f, 100.0f));
+            newStroke.Points.Add(new PointF(180.0f, 100.0f));
             result.Add(newStroke);
 
             newStroke = new Stroke(strokeType.竖);
-            newStroke.Points.Add(new PointF(100.0f, 10.0f));
-            newStroke.Points.Add(new PointF(100.0f, 190.0f));
+            newStroke.Points.Add(new PointF(100.0f, 20.0f));
+            newStroke.Points.Add(new PointF(100.0f, 180.0f));
             result.Add(newStroke);
 
+            newStroke = new Stroke(strokeType.撇);
+            newStroke.Points.Add(new PointF(100.0f, 20.0f));
+            newStroke.Points.Add(new PointF(100.0f, 100.0f));
+            newStroke.Points.Add(new PointF(50.0f, 190.0f));
+            result.Add(newStroke);
+
+            newStroke = new Stroke(strokeType.无头撇);
+            newStroke.Points.Add(new PointF(100.0f, 20.0f));
+            newStroke.Points.Add(new PointF(100.0f, 100.0f));
+            newStroke.Points.Add(new PointF(50.0f, 190.0f));
+            result.Add(newStroke);
+
+            newStroke = new Stroke(strokeType.捺);
+            newStroke.Points.Add(new PointF(70.0f, 20.0f));
+            newStroke.Points.Add(new PointF(100.0f, 20.0f));
+            newStroke.Points.Add(new PointF(120.0f, 120.0f));
+            newStroke.Points.Add(new PointF(170.0f, 180.0f));
+            result.Add(newStroke);
+
+            newStroke = new Stroke(strokeType.无头捺);
+            newStroke.Points.Add(new PointF(100.0f, 20.0f));
+            newStroke.Points.Add(new PointF(120.0f, 120.0f));
+            newStroke.Points.Add(new PointF(170.0f, 180.0f));
+            result.Add(newStroke);
+
+            newStroke = new Stroke(strokeType.点);
+            newStroke.Points.Add(new PointF(70.0f, 70.0f));
+            newStroke.Points.Add(new PointF(100.0f, 100.0f));
+            newStroke.Points.Add(new PointF(120.0f, 120.0f));
+            newStroke.Points.Add(new PointF(120.0f, 180.0f));
+            result.Add(newStroke);
             return result;
+        }
+
+        private void charBindingNavigatorSaveItem_Click(object sender, EventArgs e)
+        {
+            this.Validate();
+            this.charBindingSource.EndEdit();
+            this.tableAdapterManager.UpdateAll(this.charNotationDataSet);
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            // TODO:  这行代码将数据加载到表“charNotationDataSet.Char”中。您可以根据需要移动或删除它。
+            this.charTableAdapter.Fill(this.charNotationDataSet.Char);
+
         }
     }
 }

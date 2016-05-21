@@ -8,35 +8,52 @@ using System.Drawing.Drawing2D;
 
 namespace CharNotationDesigner
 {
-    //笔画名称：横，斜横，无头横，竖，无头竖，撇，捺，无头捺，点，提，点提（氵专用），横折，横折钩，横折弯钩，横折撇，竖勾，竖弯钩
-    enum strokeType { 横, 斜横, 无头横, 竖, 无头竖, 撇, 捺, 无头捺, 点, 提, 点提, 横折, 横折钩, 横折弯钩, 横折撇, 竖勾, 竖弯钩 };
+    /// <summary>
+    /// 笔画名称枚举。
+    /// <para>笔画列表：横，无头横，竖，无头竖，撇，捺，无头捺，点，提，点提（氵专用），横折，横折钩，横折弯钩，横折撇，竖勾，竖弯钩</para>
+    /// </summary>
+    enum strokeType { 横, 无头横, 竖, 无头竖, 撇, 无头撇, 捺, 无头捺, 点, 提, 点提, 横折, 横折钩, 横折弯钩, 横折撇, 竖勾, 竖弯钩 };
 
+    /// <summary>
+    /// 笔画类。
+    /// </summary>
     class Stroke : ICloneable
     {
+        static float widththin, widththick;
         strokeType type;
-        string name;
+        //string name;
         List<PointF> points;
         int selectedPointIndex;
-        float widththin, widththick;
-    
+        /// <summary>
+        /// 默认构造函数，笔画为横，无点。
+        /// </summary>
         public Stroke()
         {
             type = strokeType.横;
-            name = Enum.GetName(typeof(strokeType), type);
+            //name = Enum.GetName(typeof(strokeType), type);
             points = new List<PointF>();
             selectedPointIndex = 0;
         }
+        /// <summary>
+        /// 复制构造函数，执行浅复制。
+        /// <para>如需深复制请使用Clone()函数。</para>
+        /// </summary>
+        /// <param name="s"></param>
         public Stroke(Stroke s)
         {
             type = s.type;
-            name = Enum.GetName(typeof(strokeType), type);
-            points = s.ClonePoints();
+            //name = Enum.GetName(typeof(strokeType), type);
+            points = s.Points;
             selectedPointIndex = s.selectedPointIndex;
         }
+        /// <summary>
+        /// 根据笔画类型构造。
+        /// </summary>
+        /// <param name="t"></param>
         public Stroke(strokeType t)
         {
             type = t;
-            name = Enum.GetName(typeof(strokeType), type);
+            //name = Enum.GetName(typeof(strokeType), type);
             points = new List<PointF>();
             selectedPointIndex = 0;
         }
@@ -44,48 +61,66 @@ namespace CharNotationDesigner
         {
             points.Clear();
         }
-
+        /// <summary>
+        /// 获取或设置笔画类型。
+        /// </summary>
         public strokeType Type
         {
             get { return type; }
-            set { type = value; }
+            set { type = value; Enum.GetName(typeof(strokeType), type); }
         }
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
+        /// <summary>
+        /// 获取笔画名称。
+        /// <para>笔画名称通过类型自动生成。</para>
+        /// </summary>
+        //public string Name
+        //{
+        //    get { return name; }
+        //}
+
+        /// <summary>
+        /// 获取节点列表。
+        /// </summary>
         public List<PointF> Points
         {
             get { return points; }
         }
+        /// <summary>
+        /// 获取或设置当前选择点的索引。
+        /// </summary>
         public int SelectedPointIndex
         {
             get { return selectedPointIndex; }
             set { selectedPointIndex = value; }
         }
+        /// <summary>
+        /// 对节点列表进行深复制。
+        /// </summary>
+        /// <returns></returns>
         List<PointF> ClonePoints()
         {
             List<PointF> result = new List<PointF>();
             points.ForEach(i => result.Add(new PointF(i.X, i.Y)));
             return result;
         }
+        /// <summary>
+        /// 执行深复制。
+        /// </summary>
+        /// <returns></returns>
         public object Clone()
         {
             Stroke result = new Stroke();
             result.type = type;
-            result.name = name;
+            //result.name = name;
             result.points = ClonePoints();
             result.selectedPointIndex = 0;
             return result;
         }
         #region ============================绘制函数==================================
-        public void setWidth(float thin, float thick)
+        public static void setWidth(float thin, float thick)
         {
             widththin = thin;
             widththick = thick;
-            if (widththick < widththin * 1.5f)
-                widththick = widththin * 1.5f;
         }
 
         public void Draw(Graphics g)
@@ -107,39 +142,43 @@ namespace CharNotationDesigner
                 case strokeType.点:
                     DrawDian(g);
                     break;
-                case strokeType.提:
-                    DrawTi(g);
-                    break;
-                case strokeType.点提:
-                    DrawDianti(g);
-                    break;
-                case strokeType.横折钩:
-                    /*widththick *= 1.2f;*/
-                    DrawHengzhegou(g);
-                    break;
-                case strokeType.横折:
-                    DrawHengzhe(g);
-                    break;
-                case strokeType.横折撇:
-                    DrawHengzhepie(g);
-                    break;
-                case strokeType.竖弯钩:
-                    widththick *= 0.8f;
-                    DrawShuwangou(g);
-                    break;
-                case strokeType.横折弯钩:
-                    widththick *= 0.8f;
-                    DrawHengzhewangou(g);
-                    break;
-                case strokeType.无头横:
-                    DrawHeng_n(g);
-                    break;
-                case strokeType.无头竖:
-                    DrawShu_n(g);
+                //case strokeType.提:
+                //    DrawTi(g);
+                //    break;
+                //case strokeType.点提:
+                //    DrawDianti(g);
+                //    break;
+                //case strokeType.横折钩:
+                //    /*widththick *= 1.2f;*/
+                //    DrawHengzhegou(g);
+                //    break;
+                //case strokeType.横折:
+                //    DrawHengzhe(g);
+                //    break;
+                //case strokeType.横折撇:
+                //    DrawHengzhepie(g);
+                //    break;
+                //case strokeType.竖弯钩:
+                //    widththick *= 0.8f;
+                //    DrawShuwangou(g);
+                //    break;
+                //case strokeType.横折弯钩:
+                //    widththick *= 0.8f;
+                //    DrawHengzhewangou(g);
+                //    break;
+                //case strokeType.无头横:
+                //    DrawHeng_n(g);
+                //    break;
+                //case strokeType.无头竖:
+                //    DrawShu_n(g);
+                //    break;
+                case strokeType.无头撇:
+                    DrawPie_n(g);
                     break;
                 case strokeType.无头捺:
                     DrawNa_n(g);
                     break;
+
                 default:
                     //DrawOthert(g);
                     break;
@@ -148,27 +187,33 @@ namespace CharNotationDesigner
         //横
         private void DrawHeng(Graphics g)
         {
-            float k = (float)(Math.Atan((points[1].Y - points[0].Y) / (points[1].X - points[0].X)) / Math.PI * 180);   //计算转角
-            float distance = (float)Math.Sqrt(Math.Pow(points[1].X - points[0].X, 2) + Math.Pow(points[1].Y - points[0].Y, 2)); //计算长度
-            //上方平横
-            PointF[] pointline = new PointF[2];
-            pointline[0] = new PointF(points[0].X - widththin, points[0].Y - widththin);
-            pointline[1] = new PointF(points[0].X + distance - widththick * 1.8f, points[0].Y - widththin);
-            //右方、左下凸起
-            PointF[] pointDraw = new PointF[5];
-            pointDraw[0] = pointline[1];
-            pointDraw[1] = new PointF(pointDraw[0].X + widththick * 0.65f, pointDraw[0].Y - widththick * 0.8f); //凸起顶部
-            pointDraw[2] = new PointF(points[0].X + distance, points[0].Y); //右下角
-            pointDraw[3] = new PointF(points[0].X + widththin * 2, points[0].Y);
-            pointDraw[4] = new PointF(points[0].X, points[0].Y + widththin / 4);
-
             SolidBrush brush = new SolidBrush(Color.Black);
             GraphicsPath path = new GraphicsPath();
-            path.AddLines(pointline);
+
+            float distance = (float)Math.Sqrt(Math.Pow(points[1].X - points[0].X, 2) + Math.Pow(points[1].Y - points[0].Y, 2)); //计算长度
+            PointF[] pointLine = new PointF[4];
+            //上方平横
+            pointLine[0] = new PointF(points[0].X - widththin, points[0].Y - widththin / 2);
+            pointLine[1] = new PointF(points[0].X + distance - widththick * 0.6f, pointLine[0].Y);
+
+            //右方凸起
+            pointLine[2] = new PointF(pointLine[1].X + widththick * 0.6f, pointLine[1].Y - widththick * 0.6f);
+            pointLine[3] = new PointF(pointLine[2].X + widththick * 0.6f + widththin / 2, pointLine[2].Y + widththick * 0.6f + widththin / 2);
+            path.AddLines(pointLine);
+
+            //左下凸起
+            PointF[] pointDraw = new PointF[3];
+            pointDraw[0] = new PointF(pointLine[3].X - widththin / 2, pointLine[3].Y + widththin / 2);
+            pointDraw[1] = new PointF(pointDraw[0].X - distance * 0.85f, pointDraw[0].Y); //凸起顶部
+            pointDraw[2] = new PointF(points[0].X, pointDraw[0].Y + widththin * 0.4f);
             path.AddCurve(pointDraw, 0.2f);
             //对笔画进行旋转
             g.TranslateTransform(-points[0].X, -points[0].Y);
-            g.RotateTransform(k, MatrixOrder.Append);
+            if (points[1].X - points[0].X != 0)
+            {
+                float k = (float)(Math.Atan((points[1].Y - points[0].Y) / (points[1].X - points[0].X)) / Math.PI * 180);   //计算转角
+                g.RotateTransform(k, MatrixOrder.Append);
+            }
             g.TranslateTransform(points[0].X, points[0].Y, MatrixOrder.Append);
 
             g.FillPath(brush, path);
@@ -179,56 +224,114 @@ namespace CharNotationDesigner
         //竖
         private void DrawShu(Graphics g)
         {
-            PointF[] pointDraw = new PointF[4]; //竖由6个点相互连接的线段组成
-            pointDraw[0] = new PointF(points[0].X - widththick / 2, points[0].Y - widththick * (float)Math.Sin(Math.PI / 12) - widththin);
-            pointDraw[1] = new PointF(points[0].X + widththick / 2, points[0].Y - widththin);
-            pointDraw[2] = new PointF(pointDraw[1].X + widththin * (float)Math.Cos(Math.PI / 12 + Math.PI / 6),
-                                      pointDraw[1].Y + widththin * (float)Math.Sin(Math.PI / 12 + Math.PI / 6));
-            pointDraw[3] = new PointF(pointDraw[1].X, pointDraw[1].Y + widththin);
-
-            PointF[] pointDraw1 = new PointF[4]; //竖由6个点相互连接的线段组成
-            pointDraw1[0] = pointDraw[3];
-            pointDraw1[1] = new PointF(points[1].X + widththick / 2, points[1].Y - widththick * (float)Math.Sin(Math.PI / 12));
-            pointDraw1[2] = new PointF(points[1].X - widththick / 2, points[1].Y);
-            pointDraw1[3] = pointDraw[0];
             SolidBrush brush = new SolidBrush(Color.Black);
             GraphicsPath path = new GraphicsPath();
-            path.AddCurve(pointDraw);
-            path.AddCurve(pointDraw1, 0.1f);
+
+            float distance = (float)Math.Sqrt(Math.Pow(points[1].X - points[0].X, 2) + Math.Pow(points[1].Y - points[0].Y, 2)); //计算长度
+
+            //竖头
+            PointF[] pointLine = new PointF[4];
+            pointLine[0] = new PointF(points[0].X - widththick / 2, points[0].Y - widththick * 0.6f - widththin / 2);
+            pointLine[1] = new PointF(pointLine[0].X + widththick + widththin, pointLine[0].Y + widththick * 0.6f);
+            pointLine[2] = new PointF(pointLine[1].X - widththin, pointLine[1].Y + widththin);
+            pointLine[3] = new PointF(pointLine[2].X, points[0].Y + distance);
+            path.AddLines(pointLine);
+
+            PointF[] pointDraw = new PointF[4]; //竖末尾的弯头
+            pointDraw[0] = pointLine[3];
+            pointDraw[1] = new PointF(points[0].X, pointLine[3].Y + widththick * 0.5f);
+            pointDraw[2] = new PointF(pointDraw[1].X - widththick / 2 + widththin / 2, pointDraw[1].Y + widththick * 0.1f);
+            pointDraw[3] = new PointF(pointDraw[2].X - widththin / 2, pointDraw[2].Y - widththin / 2);
+            path.AddCurve(pointDraw, 1.0f);
+
+            //对笔画进行旋转
+            g.TranslateTransform(-points[0].X, -points[0].Y);
+            if (points[1].Y - points[0].Y != 0)
+            {
+                float k = (float)(Math.Atan((points[0].X - points[1].X) / (points[1].Y - points[0].Y)) / Math.PI * 180);   //计算转角
+                g.RotateTransform(k, MatrixOrder.Append);
+            }
+            g.TranslateTransform(points[0].X, points[0].Y, MatrixOrder.Append);
+
             g.FillPath(brush, path);
+            g.ResetTransform(); //恢复原来位置
             path.Dispose();
             brush.Dispose();
         }
         //撇
         private void DrawPie(Graphics g)
         {
-            double k = Math.Atan((points[0].X - points[2].X) / (points[2].Y - points[0].Y));   //计算点的总体斜角
+            SolidBrush brush = new SolidBrush(Color.Black);
+            GraphicsPath path = new GraphicsPath();
+
+            double k = Math.Atan((points[0].X - points[1].X) / (points[1].Y - points[0].Y));   //计算撇的上半斜角
             float sink = (float)Math.Sin(k);
             float cosk = (float)Math.Cos(k);
 
-            PointF[] pointDraw = new PointF[4]; //竖由6个点相互连接的线段组成
-            pointDraw[0] = new PointF(points[0].X, points[0].Y - widththick * (float)Math.Sin(Math.PI / 6) - widththin);
-            pointDraw[1] = new PointF(points[0].X + widththick, points[0].Y - widththin);
-            pointDraw[2] = new PointF(pointDraw[1].X + widththin * (float)Math.Cos(Math.PI / 6 + Math.PI / 6),
-                                      pointDraw[1].Y + widththin * (float)Math.Sin(Math.PI / 6 + Math.PI / 6));
-            pointDraw[3] = new PointF(points[0].X + widththick, pointDraw[1].Y + widththin);
+            //撇头
+            PointF[] pointLine = new PointF[3];
+            pointLine[0] = new PointF(points[0].X - widththick / 2, points[0].Y - widththick * 0.6f - widththin / 2);
+            pointLine[1] = new PointF(pointLine[0].X + widththick + widththin, pointLine[0].Y + widththick * 0.6f);
+            pointLine[2] = new PointF(pointLine[1].X - widththin, pointLine[1].Y + widththin);
+            path.AddLines(pointLine);
+
+            double k1 = Math.Atan((points[1].X - points[2].X) / (points[2].Y - points[1].Y));   //计算撇的下半斜角
+            float sink1 = (float)Math.Sin(k);
+            float cosk1 = (float)Math.Cos(k);
 
             PointF[] pointCurve1 = new PointF[3];   //右边曲线
-            pointCurve1[0] = pointDraw[3];
-            pointCurve1[1] = new PointF(points[1].X + widththick * 0.8f * cosk, points[1].Y + widththick * 0.8f * sink);
-            pointCurve1[2] = new PointF(points[2].X + widththin / 3, points[2].Y + widththin / 3);  //撇的头是平的
+            pointCurve1[0] = pointLine[2];
+            pointCurve1[1] = new PointF(points[1].X + widththick / 2 * 0.7f * cosk, points[1].Y + widththick / 2 * 0.7f * sink);
+            pointCurve1[2] = new PointF(points[2].X + widththin / 2 * cosk1, points[2].Y + widththin / 2 * sink1);  //撇的头是平的
+            path.AddCurve(pointCurve1, 0.6f);
 
             PointF[] pointCurve2 = new PointF[3];   //左边曲线，倒序
-            pointCurve2[0] = points[2];
-            pointCurve2[1] = points[1];
-            pointCurve2[2] = pointDraw[0];
+            pointCurve2[0] = new PointF(points[2].X - widththin / 2 * cosk1, points[2].Y - widththin / 2 * sink1);
+            pointCurve2[1] = new PointF(points[1].X - widththick / 2 * 0.7f * cosk, points[1].Y - widththick / 2 * 0.7f * sink);
+            pointCurve2[2] = pointLine[0];
+            path.AddCurve(pointCurve2, 0.6f);
 
+            //按轮廓顺序加入
+            //path.AddCurve(pointDraw);
+            g.FillPath(brush, path);
+            path.Dispose();
+            brush.Dispose();
+        }
+        //无头撇
+        private void DrawPie_n(Graphics g)
+        {
             SolidBrush brush = new SolidBrush(Color.Black);
             GraphicsPath path = new GraphicsPath();
+
+            double k = Math.Atan((points[0].X - points[1].X) / (points[1].Y - points[0].Y));   //计算撇的上半斜角
+            float sink = (float)Math.Sin(k);
+            float cosk = (float)Math.Cos(k);
+
+            //撇头
+            PointF[] pointLine = new PointF[3];
+            pointLine[0] = new PointF(points[0].X - widththick / 2 / cosk, points[0].Y);
+            pointLine[1] = points[0];
+            pointLine[2] = new PointF(pointLine[1].X, pointLine[1].Y + widththick / 2 / sink);
+            path.AddLines(pointLine);
+
+            double k1 = Math.Atan((points[1].X - points[2].X) / (points[2].Y - points[1].Y));   //计算撇的下半斜角
+            float sink1 = (float)Math.Sin(k);
+            float cosk1 = (float)Math.Cos(k);
+
+            PointF[] pointCurve1 = new PointF[3];   //右边曲线
+            pointCurve1[0] = pointLine[2];
+            pointCurve1[1] = new PointF(points[1].X + widththick / 2 * 0.7f * cosk, points[1].Y + widththick / 2 * 0.7f * sink);
+            pointCurve1[2] = new PointF(points[2].X + widththin / 2 * cosk1, points[2].Y + widththin / 2 * sink1);  //撇的头是平的
+            path.AddCurve(pointCurve1, 0.6f);
+
+            PointF[] pointCurve2 = new PointF[3];   //左边曲线，倒序
+            pointCurve2[0] = new PointF(points[2].X - widththin / 2 * cosk1, points[2].Y - widththin / 2 * sink1);
+            pointCurve2[1] = new PointF(points[1].X - widththick / 2 * 0.7f * cosk, points[1].Y - widththick / 2 * 0.7f * sink);
+            pointCurve2[2] = pointLine[0];
+            path.AddCurve(pointCurve2, 0.6f);
+
             //按轮廓顺序加入
-            path.AddCurve(pointDraw);
-            path.AddCurve(pointCurve1);
-            path.AddCurve(pointCurve2);
+            //path.AddCurve(pointDraw);
             g.FillPath(brush, path);
             path.Dispose();
             brush.Dispose();
@@ -236,53 +339,31 @@ namespace CharNotationDesigner
         //捺（不带横）
         private void DrawNa_n(Graphics g)
         {
-            double k = Math.Atan((points[6].X - points[2].X) / (points[6].Y - points[2].Y));   //计算点的总体斜角
-            float sink = (float)Math.Sin(k);
-            float cosk = (float)Math.Cos(k);
-            float distance = (float)Math.Sqrt(Math.Pow(points[4].X - points[6].X, 2) + Math.Pow(points[4].Y - points[6].Y, 2)); //计算捺的大小
-
-            //PointF[] pointDraw = new PointF[3]; //横的一段
-            //pointDraw[0] = points[1];
-            //pointDraw[1] = new PointF(points[0].X + widththin * 2, points[0].Y);
-            //pointDraw[2] = new PointF(points[0].X, points[0].Y + widththin / 4);
-
-            //PointF[] pointline = new PointF[2]; //横的一段
-            //pointline[0] = new PointF(points[0].X - widththin, points[0].Y - widththin);
-            //pointline[1] = new PointF(pointDraw[0].X - widththin / 4, pointDraw[0].Y - widththin);
-
-            //PointF[] pointcurve1 = new PointF[4];   //弯头
-            //pointcurve1[0] = pointline[1];
-            //pointcurve1[1] = new PointF(pointcurve1[0].X + widththin, pointcurve1[0].Y - widththin);
-            //pointcurve1[2] = new PointF(points[1].X + widththin * 2, points[1].Y);
-            //pointcurve1[3] = new PointF(points[1].X + widththin, points[1].Y + widththin / 2 * (float)Math.Cos(Math.PI / 6));
-
-            PointF[] pointcurve2 = new PointF[3];
-            pointcurve2[0] = new PointF(points[1].X + widththin, points[1].Y);  //没有横
-            pointcurve2[1] = new PointF(points[2].X + distance * 0.5f * cosk, points[2].Y - distance * 0.5f * sink);
-            //pointcurve2[2] = new PointF(points[3].X + widththick * 1.2f * cosk, points[3].Y - widththick * 1.2f * sink);
-            //pointcurve2[3] = new PointF(points[4].X + widththick * 1.5f * cosk, points[4].Y - widththick * 1.5f * sink);
-            //pointcurve2[4] = new PointF(points[5].X + widththick * 0.55f * cosk, points[5].Y - widththick * 0.55f * sink);
-            pointcurve2[2] = new PointF(points[6].X, points[6].Y - widththin / 3);
-
-            PointF[] pointcurve3 = new PointF[6];
-            pointcurve3[0] = points[6];
-            pointcurve3[1] = points[5];
-            pointcurve3[2] = points[4];
-            pointcurve3[3] = points[3];
-            pointcurve3[4] = points[2];
-            pointcurve3[5] = points[1];
-
             SolidBrush brush = new SolidBrush(Color.Black);
             GraphicsPath path = new GraphicsPath();
-            //按轮廓顺序加入
-            //if (existHeng)
-            //{
-            //    path.AddCurve(pointDraw);
-            //    path.AddLines(pointline);
-            //    path.AddCurve(pointcurve1);
-            //}
-            path.AddCurve(pointcurve2, 0.7f);
-            path.AddCurve(pointcurve3, 0.3f);
+
+            double k = Math.Atan((points[0].X - points[2].X) / (points[2].Y - points[0].Y));   //计算点的总体斜角
+            float sink = (float)Math.Sin(k);
+            float cosk = (float)Math.Cos(k);
+
+            PointF[] pointCurve1 = new PointF[3];   //右边曲线
+            pointCurve1[0] = new PointF(points[0].X + widththin / 2, points[0].Y);
+            pointCurve1[1] = new PointF(points[1].X + widththick / 2 * 0.8f * cosk, points[1].Y + widththick / 2 * 0.8f * sink);
+            pointCurve1[2] = new PointF(points[2].X + widththick * 1.2f, points[2].Y - widththick * 0.4f);
+            path.AddCurve(pointCurve1, 0.6f);
+
+            PointF[] pointCurve2 = new PointF[3];   //下方曲线
+            pointCurve2[0] = new PointF(pointCurve1[2].X, pointCurve1[2].Y + widththin / 2);
+            pointCurve2[1] = points[2];
+            pointCurve2[2] = new PointF(points[2].X - widththick * 0.5f, points[2].Y + widththick * 0.5f);
+            path.AddCurve(pointCurve2, 0.7f);
+
+            PointF[] pointCurve3 = new PointF[3];   //左边曲线
+            pointCurve3[0] = pointCurve2[2];
+            pointCurve3[1] = new PointF(points[1].X - widththick / 2 * 0.8f * cosk, points[1].Y - widththick / 2 * 0.8f * sink);
+            pointCurve3[2] = new PointF(points[0].X - widththin * 0.5f, points[0].Y);
+            path.AddCurve(pointCurve3);
+
             g.FillPath(brush, path);
             path.Dispose();
             brush.Dispose();
@@ -290,50 +371,47 @@ namespace CharNotationDesigner
         //捺（带横）
         private void DrawNa(Graphics g)
         {
-            double k = Math.Atan((points[6].X - points[2].X) / (points[6].Y - points[2].Y));   //计算点的总体斜角
-            float sink = (float)Math.Sin(k);
-            float cosk = (float)Math.Cos(k);
-            float distance = (float)Math.Sqrt(Math.Pow(points[4].X - points[6].X, 2) + Math.Pow(points[4].Y - points[6].Y, 2)); //计算捺的大小
-
-            PointF[] pointDraw = new PointF[3]; //横的一段
-            pointDraw[0] = points[1];
-            pointDraw[1] = new PointF(points[0].X + widththin * 2, points[0].Y);
-            pointDraw[2] = new PointF(points[0].X, points[0].Y + widththin / 4);
-
-            PointF[] pointline = new PointF[2]; //横的一段
-            pointline[0] = new PointF(points[0].X - widththin, points[0].Y - widththin);
-            pointline[1] = new PointF(pointDraw[0].X - widththin / 4, pointDraw[0].Y - widththin);
-
-            PointF[] pointcurve1 = new PointF[4];   //弯头
-            pointcurve1[0] = pointline[1];
-            pointcurve1[1] = new PointF(pointcurve1[0].X + widththin, pointcurve1[0].Y - widththin);
-            pointcurve1[2] = new PointF(points[1].X + widththin * 2, points[1].Y);
-            pointcurve1[3] = new PointF(points[1].X + widththin, points[1].Y + widththin / 2 * (float)Math.Cos(Math.PI / 6));
-
-            PointF[] pointcurve2 = new PointF[3];
-            pointcurve2[0] = pointcurve1[3];    //有横
-            pointcurve2[1] = new PointF(points[2].X + distance * 0.5f * cosk, points[2].Y - distance * 0.5f * sink);
-            //pointcurve2[2] = new PointF(points[3].X + widththick * 1.2f * cosk, points[3].Y - widththick * 1.2f * sink);
-            //pointcurve2[3] = new PointF(points[4].X + widththick * 1.5f * cosk, points[4].Y - widththick * 1.5f * sink);
-            //pointcurve2[4] = new PointF(points[5].X + widththick * 0.55f * cosk, points[5].Y - widththick * 0.55f * sink);
-            pointcurve2[2] = new PointF(points[6].X, points[6].Y - widththin / 3);
-
-            PointF[] pointcurve3 = new PointF[6];
-            pointcurve3[0] = points[6];
-            pointcurve3[1] = points[5];
-            pointcurve3[2] = points[4];
-            pointcurve3[3] = points[3];
-            pointcurve3[4] = points[2];
-            pointcurve3[5] = pointDraw[0];
-
             SolidBrush brush = new SolidBrush(Color.Black);
             GraphicsPath path = new GraphicsPath();
-            //按轮廓顺序加入
-            path.AddCurve(pointDraw);
-            path.AddLines(pointline);
-            path.AddCurve(pointcurve1);
-            path.AddCurve(pointcurve2, 0.7f);
-            path.AddCurve(pointcurve3, 0.3f);
+
+            PointF[] pointLine = new PointF[5];
+            //上方平横及转角
+            pointLine[0] = new PointF(points[0].X - widththin, points[0].Y - widththin / 2);
+            pointLine[1] = new PointF(points[1].X - widththick * 0.4f - widththin / 2, points[1].Y - widththin / 2);
+
+            pointLine[2] = new PointF(pointLine[1].X + widththick * 0.4f, pointLine[1].Y - widththick * 0.4f);
+            pointLine[3] = new PointF(pointLine[2].X + widththick * 0.5f, pointLine[2].Y + widththick * 0.4f);
+            pointLine[4] = new PointF(pointLine[3].X - widththick * 0.5f + widththin, pointLine[3].Y + widththick * 0.6f - widththin);
+            path.AddLines(pointLine);
+
+            double k = Math.Atan((points[1].X - points[3].X) / (points[3].Y - points[1].Y));   //计算点的总体斜角
+            float sink = (float)Math.Sin(k);
+            float cosk = (float)Math.Cos(k);
+
+            PointF[] pointCurve1 = new PointF[3];   //右边曲线
+            pointCurve1[0] = pointLine[4];
+            pointCurve1[1] = new PointF(points[2].X + widththick / 2 * 0.8f * cosk, points[2].Y + widththick / 2 * 0.8f * sink);
+            pointCurve1[2] = new PointF(points[3].X + widththick * 1.2f, points[3].Y - widththick * 0.4f);
+            path.AddCurve(pointCurve1, 0.6f);
+
+            PointF[] pointCurve2 = new PointF[3];   //下方曲线
+            pointCurve2[0] = new PointF(pointCurve1[2].X, pointCurve1[2].Y + widththin / 2);
+            pointCurve2[1] = points[3];
+            pointCurve2[2] = new PointF(points[3].X - widththick * 0.5f, points[3].Y + widththick * 0.5f);
+            path.AddCurve(pointCurve2, 0.7f);
+
+            PointF[] pointCurve3 = new PointF[3];   //左边曲线
+            pointCurve3[0] = pointCurve2[2];
+            pointCurve3[1] = new PointF(points[2].X - widththick / 2 * 0.8f * cosk, points[2].Y - widththick / 2 * 0.8f * sink);
+            pointCurve3[2] = new PointF(points[1].X - widththin * 0.5f, points[1].Y + widththin * 0.5f);
+            path.AddCurve(pointCurve3);
+            //左下凸起
+            PointF[] pointDraw = new PointF[3];
+            pointDraw[0] = pointCurve3[2];
+            pointDraw[1] = new PointF(pointDraw[0].X - (points[1].X - points[0].X) * 0.85f, points[0].Y + widththin / 2); //凸起顶部
+            pointDraw[2] = new PointF(points[0].X, pointDraw[1].Y + widththin * 0.4f);
+            path.AddCurve(pointDraw, 0.2f);
+
             g.FillPath(brush, path);
             path.Dispose();
             brush.Dispose();

@@ -44,12 +44,19 @@
             this.btnDelChar = new System.Windows.Forms.Button();
             this.btnModChar = new System.Windows.Forms.Button();
             this.txtName = new System.Windows.Forms.TextBox();
-            this.lbChooseStroke = new System.Windows.Forms.Label();
-            this.picBoxEditor = new System.Windows.Forms.PictureBox();
-            this.toolTipWarning = new System.Windows.Forms.ToolTip(this.components);
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.lbRef = new System.Windows.Forms.Label();
             this.txtRef = new System.Windows.Forms.TextBox();
+            this.chkRestrictTop = new System.Windows.Forms.CheckBox();
+            this.chkRestrictBottom = new System.Windows.Forms.CheckBox();
+            this.chkRectTop = new System.Windows.Forms.CheckBox();
+            this.chkRectBottom = new System.Windows.Forms.CheckBox();
+            this.lbSegment = new System.Windows.Forms.Label();
+            this.numUDSegment = new System.Windows.Forms.NumericUpDown();
+            this.lbChooseStroke = new System.Windows.Forms.Label();
+            this.picBoxEditor = new System.Windows.Forms.PictureBox();
+            this.toolTipWarning = new System.Windows.Forms.ToolTip(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.numUDSegment)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBoxEditor)).BeginInit();
             this.SuspendLayout();
             // 
@@ -83,6 +90,7 @@
             this.txtCharName.Name = "txtCharName";
             this.txtCharName.Size = new System.Drawing.Size(59, 21);
             this.txtCharName.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.txtCharName, "减字的名称。\r\n方便辨识，并无代码意义。");
             // 
             // chkMain
             // 
@@ -142,13 +150,13 @@
             "竖弯钩"});
             this.comboStrokes.Location = new System.Drawing.Point(199, 86);
             this.comboStrokes.Name = "comboStrokes";
-            this.comboStrokes.Size = new System.Drawing.Size(57, 20);
+            this.comboStrokes.Size = new System.Drawing.Size(79, 20);
             this.comboStrokes.TabIndex = 4;
             this.toolTip1.SetToolTip(this.comboStrokes, "可用笔画列表。\r\n列表列出了可用的笔画。\r\n选择一个并点击右方的“添加”按钮\r\n可将该笔画添加进编辑框中。");
             // 
             // btnAddStroke
             // 
-            this.btnAddStroke.Location = new System.Drawing.Point(262, 84);
+            this.btnAddStroke.Location = new System.Drawing.Point(284, 84);
             this.btnAddStroke.Name = "btnAddStroke";
             this.btnAddStroke.Size = new System.Drawing.Size(59, 23);
             this.btnAddStroke.TabIndex = 5;
@@ -170,7 +178,7 @@
             // 
             // btnDelStroke
             // 
-            this.btnDelStroke.Location = new System.Drawing.Point(189, 341);
+            this.btnDelStroke.Location = new System.Drawing.Point(199, 341);
             this.btnDelStroke.Name = "btnDelStroke";
             this.btnDelStroke.Size = new System.Drawing.Size(64, 23);
             this.btnDelStroke.TabIndex = 6;
@@ -181,9 +189,9 @@
             // 
             // btnClearChar
             // 
-            this.btnClearChar.Location = new System.Drawing.Point(256, 341);
+            this.btnClearChar.Location = new System.Drawing.Point(275, 341);
             this.btnClearChar.Name = "btnClearChar";
-            this.btnClearChar.Size = new System.Drawing.Size(65, 23);
+            this.btnClearChar.Size = new System.Drawing.Size(68, 23);
             this.btnClearChar.TabIndex = 7;
             this.btnClearChar.Text = "清空笔画";
             this.toolTip1.SetToolTip(this.btnClearChar, "清空编辑框");
@@ -192,18 +200,18 @@
             // 
             // btnDelChar
             // 
-            this.btnDelChar.Location = new System.Drawing.Point(253, 377);
+            this.btnDelChar.Location = new System.Drawing.Point(275, 377);
             this.btnDelChar.Name = "btnDelChar";
             this.btnDelChar.Size = new System.Drawing.Size(68, 23);
             this.btnDelChar.TabIndex = 10;
             this.btnDelChar.Text = "删除减字";
-            this.toolTip1.SetToolTip(this.btnDelChar, "删除当前减字。\r\n警告：该操作无法恢复！");
+            this.toolTip1.SetToolTip(this.btnDelChar, "删除当前减字。\r\n警告：操作无法恢复！");
             this.btnDelChar.UseVisualStyleBackColor = true;
             this.btnDelChar.Click += new System.EventHandler(this.btnDelChar_Click);
             // 
             // btnModChar
             // 
-            this.btnModChar.Location = new System.Drawing.Point(179, 377);
+            this.btnModChar.Location = new System.Drawing.Point(170, 377);
             this.btnModChar.Name = "btnModChar";
             this.btnModChar.Size = new System.Drawing.Size(68, 23);
             this.btnModChar.TabIndex = 9;
@@ -218,6 +226,103 @@
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(59, 21);
             this.txtName.TabIndex = 0;
+            this.toolTip1.SetToolTip(this.txtName, "程序当中的代码名称。\r\n用于在程序当中找到对应减字，建议只用ASCII字符。\r\n");
+            // 
+            // txtSearch
+            // 
+            this.txtSearch.Location = new System.Drawing.Point(12, 12);
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Size = new System.Drawing.Size(60, 21);
+            this.txtSearch.TabIndex = 11;
+            this.toolTip1.SetToolTip(this.txtSearch, "搜索列表当中的减字。\r\n按 Enter 键进行搜索。");
+            this.txtSearch.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSearch_KeyPress);
+            // 
+            // lbRef
+            // 
+            this.lbRef.AutoSize = true;
+            this.lbRef.Location = new System.Drawing.Point(80, 346);
+            this.lbRef.Name = "lbRef";
+            this.lbRef.Size = new System.Drawing.Size(65, 12);
+            this.lbRef.TabIndex = 15;
+            this.lbRef.Text = "参考汉字：";
+            this.toolTip1.SetToolTip(this.lbRef, "在编辑框背景中添加一个参考汉字，以便设计时参考。\r\n参考汉字将使用“方正清刻宋简体”字体。");
+            // 
+            // txtRef
+            // 
+            this.txtRef.Location = new System.Drawing.Point(138, 343);
+            this.txtRef.Name = "txtRef";
+            this.txtRef.Size = new System.Drawing.Size(36, 21);
+            this.txtRef.TabIndex = 16;
+            this.toolTip1.SetToolTip(this.txtRef, "在编辑框背景中添加一个参考汉字，以便设计时参考。\r\n参考汉字将使用“方正清刻宋简体”字体。");
+            this.txtRef.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtRef_KeyPress);
+            // 
+            // chkRestrictTop
+            // 
+            this.chkRestrictTop.AutoSize = true;
+            this.chkRestrictTop.Location = new System.Drawing.Point(289, 124);
+            this.chkRestrictTop.Name = "chkRestrictTop";
+            this.chkRestrictTop.Size = new System.Drawing.Size(60, 16);
+            this.chkRestrictTop.TabIndex = 17;
+            this.chkRestrictTop.Text = "上限制";
+            this.toolTip1.SetToolTip(this.chkRestrictTop, "指示减字上边缘是否受限制。\r\n勾选此项，则当上方减字的下边缘存在限制时，\r\n组合减字将在当中额外添加一横行。");
+            this.chkRestrictTop.UseVisualStyleBackColor = true;
+            this.chkRestrictTop.CheckedChanged += new System.EventHandler(this.chkRestrictTop_CheckedChanged);
+            // 
+            // chkRestrictBottom
+            // 
+            this.chkRestrictBottom.AutoSize = true;
+            this.chkRestrictBottom.Location = new System.Drawing.Point(289, 307);
+            this.chkRestrictBottom.Name = "chkRestrictBottom";
+            this.chkRestrictBottom.Size = new System.Drawing.Size(60, 16);
+            this.chkRestrictBottom.TabIndex = 18;
+            this.chkRestrictBottom.Text = "下限制";
+            this.toolTip1.SetToolTip(this.chkRestrictBottom, "指示减字下边缘是否受限制。\r\n勾选此项，则当下方减字的上边缘存在限制时，\r\n组合减字将在当中额外添加一横行。\r\n");
+            this.chkRestrictBottom.UseVisualStyleBackColor = true;
+            this.chkRestrictBottom.CheckedChanged += new System.EventHandler(this.chkRestrictBottom_CheckedChanged);
+            // 
+            // chkRectTop
+            // 
+            this.chkRectTop.AutoSize = true;
+            this.chkRectTop.Enabled = false;
+            this.chkRectTop.Location = new System.Drawing.Point(289, 201);
+            this.chkRectTop.Name = "chkRectTop";
+            this.chkRectTop.Size = new System.Drawing.Size(60, 16);
+            this.chkRectTop.TabIndex = 19;
+            this.chkRectTop.Text = "上限制";
+            this.toolTip1.SetToolTip(this.chkRectTop, "指示框内上边缘是否受限制。\r\n勾选此项，则当框内减字上边缘存在限制时，\r\n组合减字将在当中额外添加一横行。");
+            this.chkRectTop.UseVisualStyleBackColor = true;
+            this.chkRectTop.CheckedChanged += new System.EventHandler(this.chkRectTop_CheckedChanged);
+            // 
+            // chkRectBottom
+            // 
+            this.chkRectBottom.AutoSize = true;
+            this.chkRectBottom.Enabled = false;
+            this.chkRectBottom.Location = new System.Drawing.Point(289, 224);
+            this.chkRectBottom.Name = "chkRectBottom";
+            this.chkRectBottom.Size = new System.Drawing.Size(60, 16);
+            this.chkRectBottom.TabIndex = 20;
+            this.chkRectBottom.Text = "下限制";
+            this.toolTip1.SetToolTip(this.chkRectBottom, "指示框内下边缘是否受限制。\r\n勾选此项，则当框内减字下边缘存在限制时，\r\n组合减字将在当中额外添加一横行。");
+            this.chkRectBottom.UseVisualStyleBackColor = true;
+            this.chkRectBottom.CheckedChanged += new System.EventHandler(this.chkRectBottom_CheckedChanged);
+            // 
+            // lbSegment
+            // 
+            this.lbSegment.AutoSize = true;
+            this.lbSegment.Location = new System.Drawing.Point(242, 52);
+            this.lbSegment.Name = "lbSegment";
+            this.lbSegment.Size = new System.Drawing.Size(41, 12);
+            this.lbSegment.TabIndex = 21;
+            this.lbSegment.Text = "占行：";
+            this.toolTip1.SetToolTip(this.lbSegment, "指示减字占多少行横行空间。\r\n该值用于分配笔画间距以使减字看起来更匀称。");
+            // 
+            // numUDSegment
+            // 
+            this.numUDSegment.Location = new System.Drawing.Point(289, 50);
+            this.numUDSegment.Name = "numUDSegment";
+            this.numUDSegment.Size = new System.Drawing.Size(54, 21);
+            this.numUDSegment.TabIndex = 22;
+            this.toolTip1.SetToolTip(this.numUDSegment, "指示减字占多少行横行空间。\r\n该值用于分配笔画间距以使减字看起来更匀称。\r\n");
             // 
             // lbChooseStroke
             // 
@@ -230,7 +335,7 @@
             // 
             // picBoxEditor
             // 
-            this.picBoxEditor.Location = new System.Drawing.Point(103, 124);
+            this.picBoxEditor.Location = new System.Drawing.Point(82, 124);
             this.picBoxEditor.Name = "picBoxEditor";
             this.picBoxEditor.Size = new System.Drawing.Size(200, 200);
             this.picBoxEditor.TabIndex = 14;
@@ -244,36 +349,17 @@
             // 
             this.toolTipWarning.IsBalloon = true;
             // 
-            // txtSearch
-            // 
-            this.txtSearch.Location = new System.Drawing.Point(12, 12);
-            this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(60, 21);
-            this.txtSearch.TabIndex = 11;
-            this.txtSearch.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSearch_KeyPress);
-            // 
-            // lbRef
-            // 
-            this.lbRef.AutoSize = true;
-            this.lbRef.Location = new System.Drawing.Point(80, 346);
-            this.lbRef.Name = "lbRef";
-            this.lbRef.Size = new System.Drawing.Size(65, 12);
-            this.lbRef.TabIndex = 15;
-            this.lbRef.Text = "参考汉字：";
-            // 
-            // txtRef
-            // 
-            this.txtRef.Location = new System.Drawing.Point(138, 343);
-            this.txtRef.Name = "txtRef";
-            this.txtRef.Size = new System.Drawing.Size(36, 21);
-            this.txtRef.TabIndex = 16;
-            this.txtRef.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtRef_KeyPress);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(331, 409);
+            this.ClientSize = new System.Drawing.Size(355, 409);
+            this.Controls.Add(this.numUDSegment);
+            this.Controls.Add(this.lbSegment);
+            this.Controls.Add(this.chkRectBottom);
+            this.Controls.Add(this.chkRectTop);
+            this.Controls.Add(this.chkRestrictBottom);
+            this.Controls.Add(this.chkRestrictTop);
             this.Controls.Add(this.txtRef);
             this.Controls.Add(this.lbRef);
             this.Controls.Add(this.txtSearch);
@@ -298,6 +384,7 @@
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "减字设计器";
+            ((System.ComponentModel.ISupportInitialize)(this.numUDSegment)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBoxEditor)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -327,6 +414,12 @@
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.Label lbRef;
         private System.Windows.Forms.TextBox txtRef;
+        private System.Windows.Forms.CheckBox chkRestrictTop;
+        private System.Windows.Forms.CheckBox chkRestrictBottom;
+        private System.Windows.Forms.CheckBox chkRectTop;
+        private System.Windows.Forms.CheckBox chkRectBottom;
+        private System.Windows.Forms.Label lbSegment;
+        private System.Windows.Forms.NumericUpDown numUDSegment;
     }
 }
 

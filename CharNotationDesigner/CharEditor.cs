@@ -8,16 +8,19 @@ using System.Drawing.Drawing2D;
 
 namespace CharNotationDesigner
 {
+    /// <summary>
+    /// 减字设计器类。继承自Char类。
+    /// </summary>
     class CharEditor : Char
     {
-        static List<Stroke> basicStrokes = new List<Stroke>();
         int selectedStrokeIndex;   //指示当前选择的笔画下标
-        int selectedRectIndex;
-        //Bitmap img;
+        int selectedRectIndex;  //指示当前选择的矩形框角
         Bitmap imgBackground;
         bool modified;  //指示减字是否有改动
         int selectedIndicesIndex;   //鼠标选择点时当前选择的编号
-
+        /// <summary>
+        /// 创建一个设计器实例。
+        /// </summary>
         public CharEditor()
         {
             imgBackground = new Bitmap(200, 200);
@@ -27,6 +30,10 @@ namespace CharNotationDesigner
             modified = false;
             selectedIndicesIndex = -1;
         }
+        /// <summary>
+        /// 复制构造函数。执行浅复制。
+        /// </summary>
+        /// <param name="t"></param>
         public CharEditor(CharEditor t)
         {
             imgBackground = new Bitmap(t.imgBackground);
@@ -35,6 +42,10 @@ namespace CharNotationDesigner
             modified = t.modified;
             selectedIndicesIndex = t.selectedIndicesIndex;
         }
+        /// <summary>
+        /// 通过Char父类实例构造设计器
+        /// </summary>
+        /// <param name="t"></param>
         public CharEditor(Char t) : base(t)
         {
             imgBackground = new Bitmap(200, 200);
@@ -48,24 +59,24 @@ namespace CharNotationDesigner
         {
             imgBackground.Dispose();
         }
-
+        /// <summary>
+        /// 获取设计器内容是否已经更改的标识。
+        /// </summary>
         public bool IsModified
         {
             get { return modified; }
         }
-        public static List<Stroke> BasicStrokes
-        {
-            get { return basicStrokes; }
-            set 
-            {
-                basicStrokes.Clear();
-                basicStrokes = new List<Stroke>(value); 
-            }
-        }
-        public void DrawBones(Graphics g)
+        public void DrawBackground(Graphics g)
         {
             g.DrawImage(imgBackground, new Point(0, 0));
-
+        }
+        /// <summary>
+        /// 绘制笔画的骨骼。
+        /// <para>骨骼是节点间的直接连线。选中的骨骼以橘色显示，选中的节点加大显示。</para>
+        /// </summary>
+        /// <param name="g"></param>
+        public void DrawBones(Graphics g)
+        {
             if (strokes.Count == 0) //没有笔画
             {
                 return;
@@ -128,18 +139,30 @@ namespace CharNotationDesigner
             pen.Dispose();
             brush.Dispose();
         }
-
-        public void AddStroke(strokeType t)
+        /// <summary>
+        /// 画笔画。
+        /// </summary>
+        /// <param name="g"></param>
+        public void DrawStrokes(Graphics g)
         {
-            Stroke s = basicStrokes.Find(p => p.Type == t);
-            if (s != null)
+            foreach (var item in strokes)
             {
-                strokes.Add(s.Clone() as Stroke);
-                selectedStrokeIndex = strokes.Count - 1;    //选中最后加入的笔画
-                modified = true;
+                item.Draw(g);
             }
         }
-
+        /// <summary>
+        /// 添加一个笔画。笔画具有初始值。
+        /// </summary>
+        /// <param name="s"></param>
+        public void AddStroke(Stroke s)
+        {
+            strokes.Add(s.Clone() as Stroke);   //深复制一份
+            selectedStrokeIndex = strokes.Count - 1;    //选中最后加入的笔画
+            modified = true;
+        }
+        /// <summary>
+        /// 从编辑框中删除一个笔画。
+        /// </summary>
         public void RemoveStroke()
         {
             if (selectedStrokeIndex != -1 && selectedStrokeIndex != strokes.Count)
@@ -152,7 +175,9 @@ namespace CharNotationDesigner
                 modified = true;
             }
         }
-
+        /// <summary>
+        /// 从编辑框中清除所有笔画。
+        /// </summary>
         public void ClearStrokes()
         {
             strokes.Clear();
@@ -160,32 +185,32 @@ namespace CharNotationDesigner
             modified = true;
         }
         /// <summary>
-        /// 指定用作参考的文字
-        /// 使用华文中宋字体
+        /// 指定背景用作参考的文字。
+        /// <para>使用华文中宋字体。</para>
         /// </summary>
         /// <param name="text"></param>
         public void SetReference(string text)
         {
-            Font font = new Font("华文中宋", 155);
+            Font font = new Font("方正清刻本悦宋简体", 153);
             Graphics g = Graphics.FromImage(imgBackground);   //从img创建
             g.Clear(Color.White);
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
-            g.DrawString(text, font, Brushes.LightGray, -40, -27);
+            g.DrawString(text, font, Brushes.LightGray, -36, -3);
             g.Dispose();
         }
 
-        public void PreviousStroke()
-        {
-            if (strokes.Count > 0)
-                selectedStrokeIndex = (selectedStrokeIndex - 1 + strokes.Count) % strokes.Count;
-        }
-        public void NextStroke()
-        {
-            if (strokes.Count > 0)
-                selectedStrokeIndex = (selectedStrokeIndex + 1) % strokes.Count;
-        }
+        //public void PreviousStroke()
+        //{
+        //    if (strokes.Count > 0)
+        //        selectedStrokeIndex = (selectedStrokeIndex - 1 + strokes.Count) % strokes.Count;
+        //}
+        //public void NextStroke()
+        //{
+        //    if (strokes.Count > 0)
+        //        selectedStrokeIndex = (selectedStrokeIndex + 1) % strokes.Count;
+        //}
         /// <summary>
-        /// 记录下所有在固定范围内的点的坐标，并依次选取
+        /// 记录下所有在固定范围内的点的坐标，并依次选取。
         /// </summary>
         /// <param name="p"></param>
         public void SelectNearestPoint(Point p)
@@ -240,7 +265,7 @@ namespace CharNotationDesigner
             }
         }
         /// <summary>
-        /// 设置当前选中的点的坐标
+        /// 设置当前选中的点的坐标。
         /// </summary>
         /// <param name="p"></param>
         public void SetCurrentPointPos(Point p)
@@ -255,12 +280,11 @@ namespace CharNotationDesigner
             }
         }
         /// <summary>
-        /// 将修改状态重置为未修改
+        /// 重置修改状态
         /// </summary>
         public void ResetModifyStatus()
         {
             modified = false;
         }
-
     }
 }
