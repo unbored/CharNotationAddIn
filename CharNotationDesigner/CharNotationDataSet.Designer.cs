@@ -349,8 +349,6 @@ namespace CharNotationDesigner {
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
         public partial class CharDataTable : global::System.Data.TypedTableBase<CharRow> {
             
-            private global::System.Data.DataColumn columnId;
-            
             private global::System.Data.DataColumn columnname;
             
             private global::System.Data.DataColumn columnchar_name;
@@ -364,6 +362,10 @@ namespace CharNotationDesigner {
             private global::System.Data.DataColumn columnis_main;
             
             private global::System.Data.DataColumn columnis_complex;
+            
+            private global::System.Data.DataColumn columnrestrict_top;
+            
+            private global::System.Data.DataColumn columnrestrict_bottom;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
@@ -396,14 +398,6 @@ namespace CharNotationDesigner {
             protected CharDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                     base(info, context) {
                 this.InitVars();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn IdColumn {
-                get {
-                    return this.columnId;
-                }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -464,6 +458,22 @@ namespace CharNotationDesigner {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn restrict_topColumn {
+                get {
+                    return this.columnrestrict_top;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn restrict_bottomColumn {
+                get {
+                    return this.columnrestrict_bottom;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -499,17 +509,18 @@ namespace CharNotationDesigner {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public CharRow AddCharRow(int Id, string name, string char_name, int segment, bool rect_resrict_top, bool rect_restrict_bottom, bool is_main, bool is_complex) {
+            public CharRow AddCharRow(string name, string char_name, int segment, bool rect_resrict_top, bool rect_restrict_bottom, bool is_main, bool is_complex, bool restrict_top, bool restrict_bottom) {
                 CharRow rowCharRow = ((CharRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
-                        Id,
                         name,
                         char_name,
                         segment,
                         rect_resrict_top,
                         rect_restrict_bottom,
                         is_main,
-                        is_complex};
+                        is_complex,
+                        restrict_top,
+                        restrict_bottom};
                 rowCharRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowCharRow);
                 return rowCharRow;
@@ -517,9 +528,9 @@ namespace CharNotationDesigner {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public CharRow FindById(int Id) {
+            public CharRow FindBychar_name(string char_name) {
                 return ((CharRow)(this.Rows.Find(new object[] {
-                            Id})));
+                            char_name})));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -539,7 +550,6 @@ namespace CharNotationDesigner {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
-                this.columnId = base.Columns["Id"];
                 this.columnname = base.Columns["name"];
                 this.columnchar_name = base.Columns["char_name"];
                 this.columnsegment = base.Columns["segment"];
@@ -547,13 +557,13 @@ namespace CharNotationDesigner {
                 this.columnrect_restrict_bottom = base.Columns["rect_restrict_bottom"];
                 this.columnis_main = base.Columns["is_main"];
                 this.columnis_complex = base.Columns["is_complex"];
+                this.columnrestrict_top = base.Columns["restrict_top"];
+                this.columnrestrict_bottom = base.Columns["restrict_bottom"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
-                this.columnId = new global::System.Data.DataColumn("Id", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnId);
                 this.columnname = new global::System.Data.DataColumn("name", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnname);
                 this.columnchar_name = new global::System.Data.DataColumn("char_name", typeof(string), null, global::System.Data.MappingType.Element);
@@ -568,19 +578,24 @@ namespace CharNotationDesigner {
                 base.Columns.Add(this.columnis_main);
                 this.columnis_complex = new global::System.Data.DataColumn("is_complex", typeof(bool), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnis_complex);
+                this.columnrestrict_top = new global::System.Data.DataColumn("restrict_top", typeof(bool), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnrestrict_top);
+                this.columnrestrict_bottom = new global::System.Data.DataColumn("restrict_bottom", typeof(bool), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnrestrict_bottom);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
-                                this.columnId}, true));
-                this.columnId.AllowDBNull = false;
-                this.columnId.Unique = true;
+                                this.columnchar_name}, true));
                 this.columnname.AllowDBNull = false;
                 this.columnname.MaxLength = 10;
                 this.columnchar_name.AllowDBNull = false;
+                this.columnchar_name.Unique = true;
                 this.columnchar_name.MaxLength = 10;
                 this.columnsegment.AllowDBNull = false;
                 this.columnrect_resrict_top.AllowDBNull = false;
                 this.columnrect_restrict_bottom.AllowDBNull = false;
                 this.columnis_main.AllowDBNull = false;
                 this.columnis_complex.AllowDBNull = false;
+                this.columnrestrict_top.AllowDBNull = false;
+                this.columnrestrict_bottom.AllowDBNull = false;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -718,7 +733,7 @@ namespace CharNotationDesigner {
             
             private global::System.Data.DataColumn columnstroke_id;
             
-            private global::System.Data.DataColumn columnchar_id;
+            private global::System.Data.DataColumn columnchar_name;
             
             private global::System.Data.DataColumn columnx;
             
@@ -775,9 +790,9 @@ namespace CharNotationDesigner {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn char_idColumn {
+            public global::System.Data.DataColumn char_nameColumn {
                 get {
-                    return this.columnchar_id;
+                    return this.columnchar_name;
                 }
             }
             
@@ -834,12 +849,12 @@ namespace CharNotationDesigner {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public PointRow AddPointRow(int Id, int stroke_id, int char_id, double x, double y) {
+            public PointRow AddPointRow(int Id, int stroke_id, string char_name, double x, double y) {
                 PointRow rowPointRow = ((PointRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Id,
                         stroke_id,
-                        char_id,
+                        char_name,
                         x,
                         y};
                 rowPointRow.ItemArray = columnValuesArray;
@@ -849,9 +864,11 @@ namespace CharNotationDesigner {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public PointRow FindById(int Id) {
+            public PointRow FindByIdstroke_idchar_name(int Id, int stroke_id, string char_name) {
                 return ((PointRow)(this.Rows.Find(new object[] {
-                            Id})));
+                            Id,
+                            stroke_id,
+                            char_name})));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -873,7 +890,7 @@ namespace CharNotationDesigner {
             internal void InitVars() {
                 this.columnId = base.Columns["Id"];
                 this.columnstroke_id = base.Columns["stroke_id"];
-                this.columnchar_id = base.Columns["char_id"];
+                this.columnchar_name = base.Columns["char_name"];
                 this.columnx = base.Columns["x"];
                 this.columny = base.Columns["y"];
             }
@@ -885,16 +902,20 @@ namespace CharNotationDesigner {
                 base.Columns.Add(this.columnId);
                 this.columnstroke_id = new global::System.Data.DataColumn("stroke_id", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnstroke_id);
-                this.columnchar_id = new global::System.Data.DataColumn("char_id", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnchar_id);
+                this.columnchar_name = new global::System.Data.DataColumn("char_name", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnchar_name);
                 this.columnx = new global::System.Data.DataColumn("x", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnx);
                 this.columny = new global::System.Data.DataColumn("y", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columny);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
-                                this.columnId}, true));
+                                this.columnId,
+                                this.columnstroke_id,
+                                this.columnchar_name}, true));
                 this.columnId.AllowDBNull = false;
-                this.columnId.Unique = true;
+                this.columnstroke_id.AllowDBNull = false;
+                this.columnchar_name.AllowDBNull = false;
+                this.columnchar_name.MaxLength = 10;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1030,7 +1051,7 @@ namespace CharNotationDesigner {
             
             private global::System.Data.DataColumn columnId;
             
-            private global::System.Data.DataColumn columnchar_id;
+            private global::System.Data.DataColumn columnchar_name;
             
             private global::System.Data.DataColumn columntype;
             
@@ -1077,9 +1098,9 @@ namespace CharNotationDesigner {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn char_idColumn {
+            public global::System.Data.DataColumn char_nameColumn {
                 get {
-                    return this.columnchar_id;
+                    return this.columnchar_name;
                 }
             }
             
@@ -1128,11 +1149,11 @@ namespace CharNotationDesigner {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public StrokeRow AddStrokeRow(int Id, int char_id, int type) {
+            public StrokeRow AddStrokeRow(int Id, string char_name, int type) {
                 StrokeRow rowStrokeRow = ((StrokeRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Id,
-                        char_id,
+                        char_name,
                         type};
                 rowStrokeRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowStrokeRow);
@@ -1141,9 +1162,10 @@ namespace CharNotationDesigner {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public StrokeRow FindById(int Id) {
+            public StrokeRow FindByIdchar_name(int Id, string char_name) {
                 return ((StrokeRow)(this.Rows.Find(new object[] {
-                            Id})));
+                            Id,
+                            char_name})));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1164,7 +1186,7 @@ namespace CharNotationDesigner {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
                 this.columnId = base.Columns["Id"];
-                this.columnchar_id = base.Columns["char_id"];
+                this.columnchar_name = base.Columns["char_name"];
                 this.columntype = base.Columns["type"];
             }
             
@@ -1173,15 +1195,16 @@ namespace CharNotationDesigner {
             private void InitClass() {
                 this.columnId = new global::System.Data.DataColumn("Id", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnId);
-                this.columnchar_id = new global::System.Data.DataColumn("char_id", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnchar_id);
+                this.columnchar_name = new global::System.Data.DataColumn("char_name", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnchar_name);
                 this.columntype = new global::System.Data.DataColumn("type", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columntype);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
-                                this.columnId}, true));
+                                this.columnId,
+                                this.columnchar_name}, true));
                 this.columnId.AllowDBNull = false;
-                this.columnId.Unique = true;
-                this.columnchar_id.AllowDBNull = false;
+                this.columnchar_name.AllowDBNull = false;
+                this.columnchar_name.MaxLength = 10;
                 this.columntype.AllowDBNull = false;
             }
             
@@ -1325,17 +1348,6 @@ namespace CharNotationDesigner {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int Id {
-                get {
-                    return ((int)(this[this.tableChar.IdColumn]));
-                }
-                set {
-                    this[this.tableChar.IdColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string name {
                 get {
                     return ((string)(this[this.tableChar.nameColumn]));
@@ -1410,6 +1422,28 @@ namespace CharNotationDesigner {
                     this[this.tableChar.is_complexColumn] = value;
                 }
             }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool restrict_top {
+                get {
+                    return ((bool)(this[this.tableChar.restrict_topColumn]));
+                }
+                set {
+                    this[this.tableChar.restrict_topColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool restrict_bottom {
+                get {
+                    return ((bool)(this[this.tableChar.restrict_bottomColumn]));
+                }
+                set {
+                    this[this.tableChar.restrict_bottomColumn] = value;
+                }
+            }
         }
         
         /// <summary>
@@ -1441,12 +1475,7 @@ namespace CharNotationDesigner {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public int stroke_id {
                 get {
-                    try {
-                        return ((int)(this[this.tablePoint.stroke_idColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("表“Point”中列“stroke_id”的值为 DBNull。", e);
-                    }
+                    return ((int)(this[this.tablePoint.stroke_idColumn]));
                 }
                 set {
                     this[this.tablePoint.stroke_idColumn] = value;
@@ -1455,17 +1484,12 @@ namespace CharNotationDesigner {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int char_id {
+            public string char_name {
                 get {
-                    try {
-                        return ((int)(this[this.tablePoint.char_idColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("表“Point”中列“char_id”的值为 DBNull。", e);
-                    }
+                    return ((string)(this[this.tablePoint.char_nameColumn]));
                 }
                 set {
-                    this[this.tablePoint.char_idColumn] = value;
+                    this[this.tablePoint.char_nameColumn] = value;
                 }
             }
             
@@ -1499,30 +1523,6 @@ namespace CharNotationDesigner {
                 set {
                     this[this.tablePoint.yColumn] = value;
                 }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool Isstroke_idNull() {
-                return this.IsNull(this.tablePoint.stroke_idColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void Setstroke_idNull() {
-                this[this.tablePoint.stroke_idColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool Ischar_idNull() {
-                return this.IsNull(this.tablePoint.char_idColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void Setchar_idNull() {
-                this[this.tablePoint.char_idColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1577,12 +1577,12 @@ namespace CharNotationDesigner {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int char_id {
+            public string char_name {
                 get {
-                    return ((int)(this[this.tableStroke.char_idColumn]));
+                    return ((string)(this[this.tableStroke.char_nameColumn]));
                 }
                 set {
-                    this[this.tableStroke.char_idColumn] = value;
+                    this[this.tableStroke.char_nameColumn] = value;
                 }
             }
             
@@ -1825,7 +1825,6 @@ namespace CharNotationDesigner.CharNotationDataSetTableAdapters {
             global::System.Data.Common.DataTableMapping tableMapping = new global::System.Data.Common.DataTableMapping();
             tableMapping.SourceTable = "Table";
             tableMapping.DataSetTable = "Char";
-            tableMapping.ColumnMappings.Add("Id", "Id");
             tableMapping.ColumnMappings.Add("name", "name");
             tableMapping.ColumnMappings.Add("char_name", "char_name");
             tableMapping.ColumnMappings.Add("segment", "segment");
@@ -1833,12 +1832,13 @@ namespace CharNotationDesigner.CharNotationDataSetTableAdapters {
             tableMapping.ColumnMappings.Add("rect_restrict_bottom", "rect_restrict_bottom");
             tableMapping.ColumnMappings.Add("is_main", "is_main");
             tableMapping.ColumnMappings.Add("is_complex", "is_complex");
+            tableMapping.ColumnMappings.Add("restrict_top", "restrict_top");
+            tableMapping.ColumnMappings.Add("restrict_bottom", "restrict_bottom");
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [dbo].[Char] WHERE (([Id] = @Original_Id) AND ([name] = @Original_name) AND ([char_name] = @Original_char_name) AND ([segment] = @Original_segment) AND ([rect_resrict_top] = @Original_rect_resrict_top) AND ([rect_restrict_bottom] = @Original_rect_restrict_bottom) AND ([is_main] = @Original_is_main) AND ([is_complex] = @Original_is_complex))";
+            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [Char] WHERE (([name] = @Original_name) AND ([char_name] = @Original_char_name) AND ([segment] = @Original_segment) AND ([rect_resrict_top] = @Original_rect_resrict_top) AND ([rect_restrict_bottom] = @Original_rect_restrict_bottom) AND ([is_main] = @Original_is_main) AND ([is_complex] = @Original_is_complex) AND ([restrict_bottom] = @Original_restrict_bottom) AND ([restrict_top] = @Original_restrict_top))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Id", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_name", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "name", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_char_name", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "char_name", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_segment", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "segment", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
@@ -1846,12 +1846,13 @@ namespace CharNotationDesigner.CharNotationDataSetTableAdapters {
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_rect_restrict_bottom", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "rect_restrict_bottom", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_is_main", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "is_main", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_is_complex", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "is_complex", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_restrict_bottom", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "restrict_bottom", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_restrict_top", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "restrict_top", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = @"INSERT INTO [dbo].[Char] ([Id], [name], [char_name], [segment], [rect_resrict_top], [rect_restrict_bottom], [is_main], [is_complex]) VALUES (@Id, @name, @char_name, @segment, @rect_resrict_top, @rect_restrict_bottom, @is_main, @is_complex);
-SELECT Id, name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_main, is_complex FROM Char WHERE (Id = @Id)";
+            this._adapter.InsertCommand.CommandText = @"INSERT INTO [Char] ([name], [char_name], [segment], [rect_resrict_top], [rect_restrict_bottom], [is_main], [is_complex], [restrict_bottom], [restrict_top]) VALUES (@name, @char_name, @segment, @rect_resrict_top, @rect_restrict_bottom, @is_main, @is_complex, @restrict_bottom, @restrict_top);
+SELECT name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_main, is_complex, restrict_bottom, restrict_top FROM Char WHERE (char_name = @char_name)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Id", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@name", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "name", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@char_name", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "char_name", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@segment", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "segment", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -1859,12 +1860,13 @@ SELECT Id, name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@rect_restrict_bottom", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "rect_restrict_bottom", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@is_main", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "is_main", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@is_complex", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "is_complex", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@restrict_bottom", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "restrict_bottom", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@restrict_top", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "restrict_top", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[Char] SET [Id] = @Id, [name] = @name, [char_name] = @char_name, [segment] = @segment, [rect_resrict_top] = @rect_resrict_top, [rect_restrict_bottom] = @rect_restrict_bottom, [is_main] = @is_main, [is_complex] = @is_complex WHERE (([Id] = @Original_Id) AND ([name] = @Original_name) AND ([char_name] = @Original_char_name) AND ([segment] = @Original_segment) AND ([rect_resrict_top] = @Original_rect_resrict_top) AND ([rect_restrict_bottom] = @Original_rect_restrict_bottom) AND ([is_main] = @Original_is_main) AND ([is_complex] = @Original_is_complex));
-SELECT Id, name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_main, is_complex FROM Char WHERE (Id = @Id)";
+            this._adapter.UpdateCommand.CommandText = @"UPDATE [Char] SET [name] = @name, [char_name] = @char_name, [segment] = @segment, [rect_resrict_top] = @rect_resrict_top, [rect_restrict_bottom] = @rect_restrict_bottom, [is_main] = @is_main, [is_complex] = @is_complex, [restrict_bottom] = @restrict_bottom, [restrict_top] = @restrict_top WHERE (([name] = @Original_name) AND ([char_name] = @Original_char_name) AND ([segment] = @Original_segment) AND ([rect_resrict_top] = @Original_rect_resrict_top) AND ([rect_restrict_bottom] = @Original_rect_restrict_bottom) AND ([is_main] = @Original_is_main) AND ([is_complex] = @Original_is_complex) AND ([restrict_bottom] = @Original_restrict_bottom) AND ([restrict_top] = @Original_restrict_top));
+SELECT name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_main, is_complex, restrict_bottom, restrict_top FROM Char WHERE (char_name = @char_name)";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Id", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@name", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "name", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@char_name", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "char_name", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@segment", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "segment", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -1872,7 +1874,8 @@ SELECT Id, name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@rect_restrict_bottom", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "rect_restrict_bottom", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@is_main", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "is_main", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@is_complex", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "is_complex", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Id", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@restrict_bottom", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "restrict_bottom", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@restrict_top", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "restrict_top", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_name", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "name", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_char_name", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "char_name", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_segment", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "segment", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
@@ -1880,6 +1883,8 @@ SELECT Id, name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_rect_restrict_bottom", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "rect_restrict_bottom", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_is_main", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "is_main", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_is_complex", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "is_complex", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_restrict_bottom", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "restrict_bottom", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_restrict_top", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "restrict_top", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1895,8 +1900,8 @@ SELECT Id, name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[1];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT Id, name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_m" +
-                "ain, is_complex FROM dbo.Char";
+            this._commandCollection[0].CommandText = "SELECT name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_main," +
+                " is_complex, restrict_bottom, restrict_top FROM Char";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
         }
         
@@ -1957,25 +1962,26 @@ SELECT Id, name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(int Original_Id, string Original_name, string Original_char_name, int Original_segment, bool Original_rect_resrict_top, bool Original_rect_restrict_bottom, bool Original_is_main, bool Original_is_complex) {
-            this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_Id));
+        public virtual int Delete(string Original_name, string Original_char_name, int Original_segment, bool Original_rect_resrict_top, bool Original_rect_restrict_bottom, bool Original_is_main, bool Original_is_complex, bool Original_restrict_bottom, bool Original_restrict_top) {
             if ((Original_name == null)) {
                 throw new global::System.ArgumentNullException("Original_name");
             }
             else {
-                this.Adapter.DeleteCommand.Parameters[1].Value = ((string)(Original_name));
+                this.Adapter.DeleteCommand.Parameters[0].Value = ((string)(Original_name));
             }
             if ((Original_char_name == null)) {
                 throw new global::System.ArgumentNullException("Original_char_name");
             }
             else {
-                this.Adapter.DeleteCommand.Parameters[2].Value = ((string)(Original_char_name));
+                this.Adapter.DeleteCommand.Parameters[1].Value = ((string)(Original_char_name));
             }
-            this.Adapter.DeleteCommand.Parameters[3].Value = ((int)(Original_segment));
-            this.Adapter.DeleteCommand.Parameters[4].Value = ((bool)(Original_rect_resrict_top));
-            this.Adapter.DeleteCommand.Parameters[5].Value = ((bool)(Original_rect_restrict_bottom));
-            this.Adapter.DeleteCommand.Parameters[6].Value = ((bool)(Original_is_main));
-            this.Adapter.DeleteCommand.Parameters[7].Value = ((bool)(Original_is_complex));
+            this.Adapter.DeleteCommand.Parameters[2].Value = ((int)(Original_segment));
+            this.Adapter.DeleteCommand.Parameters[3].Value = ((bool)(Original_rect_resrict_top));
+            this.Adapter.DeleteCommand.Parameters[4].Value = ((bool)(Original_rect_restrict_bottom));
+            this.Adapter.DeleteCommand.Parameters[5].Value = ((bool)(Original_is_main));
+            this.Adapter.DeleteCommand.Parameters[6].Value = ((bool)(Original_is_complex));
+            this.Adapter.DeleteCommand.Parameters[7].Value = ((bool)(Original_restrict_bottom));
+            this.Adapter.DeleteCommand.Parameters[8].Value = ((bool)(Original_restrict_top));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
             if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -1996,25 +2002,26 @@ SELECT Id, name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(int Id, string name, string char_name, int segment, bool rect_resrict_top, bool rect_restrict_bottom, bool is_main, bool is_complex) {
-            this.Adapter.InsertCommand.Parameters[0].Value = ((int)(Id));
+        public virtual int Insert(string name, string char_name, int segment, bool rect_resrict_top, bool rect_restrict_bottom, bool is_main, bool is_complex, bool restrict_bottom, bool restrict_top) {
             if ((name == null)) {
                 throw new global::System.ArgumentNullException("name");
             }
             else {
-                this.Adapter.InsertCommand.Parameters[1].Value = ((string)(name));
+                this.Adapter.InsertCommand.Parameters[0].Value = ((string)(name));
             }
             if ((char_name == null)) {
                 throw new global::System.ArgumentNullException("char_name");
             }
             else {
-                this.Adapter.InsertCommand.Parameters[2].Value = ((string)(char_name));
+                this.Adapter.InsertCommand.Parameters[1].Value = ((string)(char_name));
             }
-            this.Adapter.InsertCommand.Parameters[3].Value = ((int)(segment));
-            this.Adapter.InsertCommand.Parameters[4].Value = ((bool)(rect_resrict_top));
-            this.Adapter.InsertCommand.Parameters[5].Value = ((bool)(rect_restrict_bottom));
-            this.Adapter.InsertCommand.Parameters[6].Value = ((bool)(is_main));
-            this.Adapter.InsertCommand.Parameters[7].Value = ((bool)(is_complex));
+            this.Adapter.InsertCommand.Parameters[2].Value = ((int)(segment));
+            this.Adapter.InsertCommand.Parameters[3].Value = ((bool)(rect_resrict_top));
+            this.Adapter.InsertCommand.Parameters[4].Value = ((bool)(rect_restrict_bottom));
+            this.Adapter.InsertCommand.Parameters[5].Value = ((bool)(is_main));
+            this.Adapter.InsertCommand.Parameters[6].Value = ((bool)(is_complex));
+            this.Adapter.InsertCommand.Parameters[7].Value = ((bool)(restrict_bottom));
+            this.Adapter.InsertCommand.Parameters[8].Value = ((bool)(restrict_top));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
             if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -2036,7 +2043,6 @@ SELECT Id, name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
         public virtual int Update(
-                    int Id, 
                     string name, 
                     string char_name, 
                     int segment, 
@@ -2044,33 +2050,36 @@ SELECT Id, name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_
                     bool rect_restrict_bottom, 
                     bool is_main, 
                     bool is_complex, 
-                    int Original_Id, 
+                    bool restrict_bottom, 
+                    bool restrict_top, 
                     string Original_name, 
                     string Original_char_name, 
                     int Original_segment, 
                     bool Original_rect_resrict_top, 
                     bool Original_rect_restrict_bottom, 
                     bool Original_is_main, 
-                    bool Original_is_complex) {
-            this.Adapter.UpdateCommand.Parameters[0].Value = ((int)(Id));
+                    bool Original_is_complex, 
+                    bool Original_restrict_bottom, 
+                    bool Original_restrict_top) {
             if ((name == null)) {
                 throw new global::System.ArgumentNullException("name");
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[1].Value = ((string)(name));
+                this.Adapter.UpdateCommand.Parameters[0].Value = ((string)(name));
             }
             if ((char_name == null)) {
                 throw new global::System.ArgumentNullException("char_name");
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[2].Value = ((string)(char_name));
+                this.Adapter.UpdateCommand.Parameters[1].Value = ((string)(char_name));
             }
-            this.Adapter.UpdateCommand.Parameters[3].Value = ((int)(segment));
-            this.Adapter.UpdateCommand.Parameters[4].Value = ((bool)(rect_resrict_top));
-            this.Adapter.UpdateCommand.Parameters[5].Value = ((bool)(rect_restrict_bottom));
-            this.Adapter.UpdateCommand.Parameters[6].Value = ((bool)(is_main));
-            this.Adapter.UpdateCommand.Parameters[7].Value = ((bool)(is_complex));
-            this.Adapter.UpdateCommand.Parameters[8].Value = ((int)(Original_Id));
+            this.Adapter.UpdateCommand.Parameters[2].Value = ((int)(segment));
+            this.Adapter.UpdateCommand.Parameters[3].Value = ((bool)(rect_resrict_top));
+            this.Adapter.UpdateCommand.Parameters[4].Value = ((bool)(rect_restrict_bottom));
+            this.Adapter.UpdateCommand.Parameters[5].Value = ((bool)(is_main));
+            this.Adapter.UpdateCommand.Parameters[6].Value = ((bool)(is_complex));
+            this.Adapter.UpdateCommand.Parameters[7].Value = ((bool)(restrict_bottom));
+            this.Adapter.UpdateCommand.Parameters[8].Value = ((bool)(restrict_top));
             if ((Original_name == null)) {
                 throw new global::System.ArgumentNullException("Original_name");
             }
@@ -2088,6 +2097,8 @@ SELECT Id, name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_
             this.Adapter.UpdateCommand.Parameters[13].Value = ((bool)(Original_rect_restrict_bottom));
             this.Adapter.UpdateCommand.Parameters[14].Value = ((bool)(Original_is_main));
             this.Adapter.UpdateCommand.Parameters[15].Value = ((bool)(Original_is_complex));
+            this.Adapter.UpdateCommand.Parameters[16].Value = ((bool)(Original_restrict_bottom));
+            this.Adapter.UpdateCommand.Parameters[17].Value = ((bool)(Original_restrict_top));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
             if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -2108,8 +2119,25 @@ SELECT Id, name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(string name, string char_name, int segment, bool rect_resrict_top, bool rect_restrict_bottom, bool is_main, bool is_complex, int Original_Id, string Original_name, string Original_char_name, int Original_segment, bool Original_rect_resrict_top, bool Original_rect_restrict_bottom, bool Original_is_main, bool Original_is_complex) {
-            return this.Update(Original_Id, name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_main, is_complex, Original_Id, Original_name, Original_char_name, Original_segment, Original_rect_resrict_top, Original_rect_restrict_bottom, Original_is_main, Original_is_complex);
+        public virtual int Update(
+                    string name, 
+                    int segment, 
+                    bool rect_resrict_top, 
+                    bool rect_restrict_bottom, 
+                    bool is_main, 
+                    bool is_complex, 
+                    bool restrict_bottom, 
+                    bool restrict_top, 
+                    string Original_name, 
+                    string Original_char_name, 
+                    int Original_segment, 
+                    bool Original_rect_resrict_top, 
+                    bool Original_rect_restrict_bottom, 
+                    bool Original_is_main, 
+                    bool Original_is_complex, 
+                    bool Original_restrict_bottom, 
+                    bool Original_restrict_top) {
+            return this.Update(name, Original_char_name, segment, rect_resrict_top, rect_restrict_bottom, is_main, is_complex, restrict_bottom, restrict_top, Original_name, Original_char_name, Original_segment, Original_rect_resrict_top, Original_rect_restrict_bottom, Original_is_main, Original_is_complex, Original_restrict_bottom, Original_restrict_top);
         }
     }
     
@@ -2236,49 +2264,45 @@ SELECT Id, name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_
             tableMapping.DataSetTable = "Point";
             tableMapping.ColumnMappings.Add("Id", "Id");
             tableMapping.ColumnMappings.Add("stroke_id", "stroke_id");
-            tableMapping.ColumnMappings.Add("char_id", "char_id");
+            tableMapping.ColumnMappings.Add("char_name", "char_name");
             tableMapping.ColumnMappings.Add("x", "x");
             tableMapping.ColumnMappings.Add("y", "y");
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [dbo].[Point] WHERE (([Id] = @Original_Id) AND ((@IsNull_stroke_id = 1 AND [stroke_id] IS NULL) OR ([stroke_id] = @Original_stroke_id)) AND ((@IsNull_char_id = 1 AND [char_id] IS NULL) OR ([char_id] = @Original_char_id)) AND ((@IsNull_x = 1 AND [x] IS NULL) OR ([x] = @Original_x)) AND ((@IsNull_y = 1 AND [y] IS NULL) OR ([y] = @Original_y)))";
+            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [dbo].[Point] WHERE (([Id] = @Original_Id) AND ([stroke_id] = @Original_stroke_id) AND ([char_name] = @Original_char_name) AND ((@IsNull_x = 1 AND [x] IS NULL) OR ([x] = @Original_x)) AND ((@IsNull_y = 1 AND [y] IS NULL) OR ([y] = @Original_y)))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Id", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull_stroke_id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "stroke_id", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_stroke_id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "stroke_id", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull_char_id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "char_id", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_char_id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "char_id", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_char_name", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "char_name", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull_x", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "x", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_x", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "x", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull_y", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "y", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_y", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "y", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[Point] ([Id], [stroke_id], [char_id], [x], [y]) VALUES (@Id, @" +
-                "stroke_id, @char_id, @x, @y);\r\nSELECT Id, stroke_id, char_id, x, y FROM Point WH" +
-                "ERE (Id = @Id)";
+            this._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[Point] ([Id], [stroke_id], [char_name], [x], [y]) VALUES (@Id," +
+                " @stroke_id, @char_name, @x, @y);\r\nSELECT Id, stroke_id, char_name, x, y FROM Po" +
+                "int WHERE (Id = @Id) AND (char_name = @char_name) AND (stroke_id = @stroke_id)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Id", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stroke_id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "stroke_id", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@char_id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "char_id", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@char_name", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "char_name", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@x", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "x", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@y", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "y", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[Point] SET [Id] = @Id, [stroke_id] = @stroke_id, [char_id] = @char_id, [x] = @x, [y] = @y WHERE (([Id] = @Original_Id) AND ((@IsNull_stroke_id = 1 AND [stroke_id] IS NULL) OR ([stroke_id] = @Original_stroke_id)) AND ((@IsNull_char_id = 1 AND [char_id] IS NULL) OR ([char_id] = @Original_char_id)) AND ((@IsNull_x = 1 AND [x] IS NULL) OR ([x] = @Original_x)) AND ((@IsNull_y = 1 AND [y] IS NULL) OR ([y] = @Original_y)));
-SELECT Id, stroke_id, char_id, x, y FROM Point WHERE (Id = @Id)";
+            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[Point] SET [Id] = @Id, [stroke_id] = @stroke_id, [char_name] = @char_name, [x] = @x, [y] = @y WHERE (([Id] = @Original_Id) AND ([stroke_id] = @Original_stroke_id) AND ([char_name] = @Original_char_name) AND ((@IsNull_x = 1 AND [x] IS NULL) OR ([x] = @Original_x)) AND ((@IsNull_y = 1 AND [y] IS NULL) OR ([y] = @Original_y)));
+SELECT Id, stroke_id, char_name, x, y FROM Point WHERE (Id = @Id) AND (char_name = @char_name) AND (stroke_id = @stroke_id)";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Id", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@stroke_id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "stroke_id", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@char_id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "char_id", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@char_name", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "char_name", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@x", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "x", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@y", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "y", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Id", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull_stroke_id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "stroke_id", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_stroke_id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "stroke_id", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull_char_id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "char_id", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_char_id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "char_id", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_char_name", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "char_name", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull_x", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "x", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_x", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "x", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull_y", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "y", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
@@ -2298,7 +2322,7 @@ SELECT Id, stroke_id, char_id, x, y FROM Point WHERE (Id = @Id)";
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[1];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT Id, stroke_id, char_id, x, y FROM dbo.Point";
+            this._commandCollection[0].CommandText = "SELECT Id, stroke_id, char_name, x, y FROM dbo.Point";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
         }
         
@@ -2359,39 +2383,30 @@ SELECT Id, stroke_id, char_id, x, y FROM Point WHERE (Id = @Id)";
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(int Original_Id, global::System.Nullable<int> Original_stroke_id, global::System.Nullable<int> Original_char_id, global::System.Nullable<double> Original_x, global::System.Nullable<double> Original_y) {
+        public virtual int Delete(int Original_Id, int Original_stroke_id, string Original_char_name, global::System.Nullable<double> Original_x, global::System.Nullable<double> Original_y) {
             this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_Id));
-            if ((Original_stroke_id.HasValue == true)) {
-                this.Adapter.DeleteCommand.Parameters[1].Value = ((object)(0));
-                this.Adapter.DeleteCommand.Parameters[2].Value = ((int)(Original_stroke_id.Value));
+            this.Adapter.DeleteCommand.Parameters[1].Value = ((int)(Original_stroke_id));
+            if ((Original_char_name == null)) {
+                throw new global::System.ArgumentNullException("Original_char_name");
             }
             else {
-                this.Adapter.DeleteCommand.Parameters[1].Value = ((object)(1));
-                this.Adapter.DeleteCommand.Parameters[2].Value = global::System.DBNull.Value;
+                this.Adapter.DeleteCommand.Parameters[2].Value = ((string)(Original_char_name));
             }
-            if ((Original_char_id.HasValue == true)) {
+            if ((Original_x.HasValue == true)) {
                 this.Adapter.DeleteCommand.Parameters[3].Value = ((object)(0));
-                this.Adapter.DeleteCommand.Parameters[4].Value = ((int)(Original_char_id.Value));
+                this.Adapter.DeleteCommand.Parameters[4].Value = ((double)(Original_x.Value));
             }
             else {
                 this.Adapter.DeleteCommand.Parameters[3].Value = ((object)(1));
                 this.Adapter.DeleteCommand.Parameters[4].Value = global::System.DBNull.Value;
             }
-            if ((Original_x.HasValue == true)) {
+            if ((Original_y.HasValue == true)) {
                 this.Adapter.DeleteCommand.Parameters[5].Value = ((object)(0));
-                this.Adapter.DeleteCommand.Parameters[6].Value = ((double)(Original_x.Value));
+                this.Adapter.DeleteCommand.Parameters[6].Value = ((double)(Original_y.Value));
             }
             else {
                 this.Adapter.DeleteCommand.Parameters[5].Value = ((object)(1));
                 this.Adapter.DeleteCommand.Parameters[6].Value = global::System.DBNull.Value;
-            }
-            if ((Original_y.HasValue == true)) {
-                this.Adapter.DeleteCommand.Parameters[7].Value = ((object)(0));
-                this.Adapter.DeleteCommand.Parameters[8].Value = ((double)(Original_y.Value));
-            }
-            else {
-                this.Adapter.DeleteCommand.Parameters[7].Value = ((object)(1));
-                this.Adapter.DeleteCommand.Parameters[8].Value = global::System.DBNull.Value;
             }
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
             if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -2413,19 +2428,14 @@ SELECT Id, stroke_id, char_id, x, y FROM Point WHERE (Id = @Id)";
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(int Id, global::System.Nullable<int> stroke_id, global::System.Nullable<int> char_id, global::System.Nullable<double> x, global::System.Nullable<double> y) {
+        public virtual int Insert(int Id, int stroke_id, string char_name, global::System.Nullable<double> x, global::System.Nullable<double> y) {
             this.Adapter.InsertCommand.Parameters[0].Value = ((int)(Id));
-            if ((stroke_id.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[1].Value = ((int)(stroke_id.Value));
+            this.Adapter.InsertCommand.Parameters[1].Value = ((int)(stroke_id));
+            if ((char_name == null)) {
+                throw new global::System.ArgumentNullException("char_name");
             }
             else {
-                this.Adapter.InsertCommand.Parameters[1].Value = global::System.DBNull.Value;
-            }
-            if ((char_id.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[2].Value = ((int)(char_id.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[2].Value = global::System.DBNull.Value;
+                this.Adapter.InsertCommand.Parameters[2].Value = ((string)(char_name));
             }
             if ((x.HasValue == true)) {
                 this.Adapter.InsertCommand.Parameters[3].Value = ((double)(x.Value));
@@ -2459,19 +2469,14 @@ SELECT Id, stroke_id, char_id, x, y FROM Point WHERE (Id = @Id)";
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(int Id, global::System.Nullable<int> stroke_id, global::System.Nullable<int> char_id, global::System.Nullable<double> x, global::System.Nullable<double> y, int Original_Id, global::System.Nullable<int> Original_stroke_id, global::System.Nullable<int> Original_char_id, global::System.Nullable<double> Original_x, global::System.Nullable<double> Original_y) {
+        public virtual int Update(int Id, int stroke_id, string char_name, global::System.Nullable<double> x, global::System.Nullable<double> y, int Original_Id, int Original_stroke_id, string Original_char_name, global::System.Nullable<double> Original_x, global::System.Nullable<double> Original_y) {
             this.Adapter.UpdateCommand.Parameters[0].Value = ((int)(Id));
-            if ((stroke_id.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[1].Value = ((int)(stroke_id.Value));
+            this.Adapter.UpdateCommand.Parameters[1].Value = ((int)(stroke_id));
+            if ((char_name == null)) {
+                throw new global::System.ArgumentNullException("char_name");
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[1].Value = global::System.DBNull.Value;
-            }
-            if ((char_id.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[2].Value = ((int)(char_id.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[2].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[2].Value = ((string)(char_name));
             }
             if ((x.HasValue == true)) {
                 this.Adapter.UpdateCommand.Parameters[3].Value = ((double)(x.Value));
@@ -2486,37 +2491,28 @@ SELECT Id, stroke_id, char_id, x, y FROM Point WHERE (Id = @Id)";
                 this.Adapter.UpdateCommand.Parameters[4].Value = global::System.DBNull.Value;
             }
             this.Adapter.UpdateCommand.Parameters[5].Value = ((int)(Original_Id));
-            if ((Original_stroke_id.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[6].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[7].Value = ((int)(Original_stroke_id.Value));
+            this.Adapter.UpdateCommand.Parameters[6].Value = ((int)(Original_stroke_id));
+            if ((Original_char_name == null)) {
+                throw new global::System.ArgumentNullException("Original_char_name");
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[6].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[7].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[7].Value = ((string)(Original_char_name));
             }
-            if ((Original_char_id.HasValue == true)) {
+            if ((Original_x.HasValue == true)) {
                 this.Adapter.UpdateCommand.Parameters[8].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[9].Value = ((int)(Original_char_id.Value));
+                this.Adapter.UpdateCommand.Parameters[9].Value = ((double)(Original_x.Value));
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[8].Value = ((object)(1));
                 this.Adapter.UpdateCommand.Parameters[9].Value = global::System.DBNull.Value;
             }
-            if ((Original_x.HasValue == true)) {
+            if ((Original_y.HasValue == true)) {
                 this.Adapter.UpdateCommand.Parameters[10].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[11].Value = ((double)(Original_x.Value));
+                this.Adapter.UpdateCommand.Parameters[11].Value = ((double)(Original_y.Value));
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[10].Value = ((object)(1));
                 this.Adapter.UpdateCommand.Parameters[11].Value = global::System.DBNull.Value;
-            }
-            if ((Original_y.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[12].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[13].Value = ((double)(Original_y.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[12].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[13].Value = global::System.DBNull.Value;
             }
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
             if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -2538,8 +2534,8 @@ SELECT Id, stroke_id, char_id, x, y FROM Point WHERE (Id = @Id)";
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(global::System.Nullable<int> stroke_id, global::System.Nullable<int> char_id, global::System.Nullable<double> x, global::System.Nullable<double> y, int Original_Id, global::System.Nullable<int> Original_stroke_id, global::System.Nullable<int> Original_char_id, global::System.Nullable<double> Original_x, global::System.Nullable<double> Original_y) {
-            return this.Update(Original_Id, stroke_id, char_id, x, y, Original_Id, Original_stroke_id, Original_char_id, Original_x, Original_y);
+        public virtual int Update(global::System.Nullable<double> x, global::System.Nullable<double> y, int Original_Id, int Original_stroke_id, string Original_char_name, global::System.Nullable<double> Original_x, global::System.Nullable<double> Original_y) {
+            return this.Update(Original_Id, Original_stroke_id, Original_char_name, x, y, Original_Id, Original_stroke_id, Original_char_name, Original_x, Original_y);
         }
     }
     
@@ -2665,36 +2661,36 @@ SELECT Id, stroke_id, char_id, x, y FROM Point WHERE (Id = @Id)";
             tableMapping.SourceTable = "Table";
             tableMapping.DataSetTable = "Stroke";
             tableMapping.ColumnMappings.Add("Id", "Id");
-            tableMapping.ColumnMappings.Add("char_id", "char_id");
+            tableMapping.ColumnMappings.Add("char_name", "char_name");
             tableMapping.ColumnMappings.Add("type", "type");
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = "DELETE FROM [dbo].[Stroke] WHERE (([Id] = @Original_Id) AND ([char_id] = @Origina" +
-                "l_char_id) AND ([type] = @Original_type))";
+            this._adapter.DeleteCommand.CommandText = "DELETE FROM [dbo].[Stroke] WHERE (([Id] = @Original_Id) AND ([char_name] = @Origi" +
+                "nal_char_name) AND ([type] = @Original_type))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Id", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_char_id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "char_id", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_char_name", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "char_name", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_type", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "type", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[Stroke] ([Id], [char_id], [type]) VALUES (@Id, @char_id, @type" +
-                ");\r\nSELECT Id, char_id, type FROM Stroke WHERE (Id = @Id)";
+            this._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[Stroke] ([Id], [char_name], [type]) VALUES (@Id, @char_name, @" +
+                "type);\r\nSELECT Id, char_name, type FROM Stroke WHERE (Id = @Id) AND (char_name =" +
+                " @char_name)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Id", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@char_id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "char_id", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@char_name", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "char_name", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@type", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "type", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = "UPDATE [dbo].[Stroke] SET [Id] = @Id, [char_id] = @char_id, [type] = @type WHERE " +
-                "(([Id] = @Original_Id) AND ([char_id] = @Original_char_id) AND ([type] = @Origin" +
-                "al_type));\r\nSELECT Id, char_id, type FROM Stroke WHERE (Id = @Id)";
+            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[Stroke] SET [Id] = @Id, [char_name] = @char_name, [type] = @type WHERE (([Id] = @Original_Id) AND ([char_name] = @Original_char_name) AND ([type] = @Original_type));
+SELECT Id, char_name, type FROM Stroke WHERE (Id = @Id) AND (char_name = @char_name)";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Id", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@char_id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "char_id", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@char_name", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "char_name", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@type", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "type", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Id", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_char_id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "char_id", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_char_name", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "char_name", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_type", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "type", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
         }
         
@@ -2711,7 +2707,7 @@ SELECT Id, stroke_id, char_id, x, y FROM Point WHERE (Id = @Id)";
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[1];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT Id, char_id, type FROM dbo.Stroke";
+            this._commandCollection[0].CommandText = "SELECT Id, char_name, type FROM dbo.Stroke";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
         }
         
@@ -2772,9 +2768,14 @@ SELECT Id, stroke_id, char_id, x, y FROM Point WHERE (Id = @Id)";
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(int Original_Id, int Original_char_id, int Original_type) {
+        public virtual int Delete(int Original_Id, string Original_char_name, int Original_type) {
             this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_Id));
-            this.Adapter.DeleteCommand.Parameters[1].Value = ((int)(Original_char_id));
+            if ((Original_char_name == null)) {
+                throw new global::System.ArgumentNullException("Original_char_name");
+            }
+            else {
+                this.Adapter.DeleteCommand.Parameters[1].Value = ((string)(Original_char_name));
+            }
             this.Adapter.DeleteCommand.Parameters[2].Value = ((int)(Original_type));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
             if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -2796,9 +2797,14 @@ SELECT Id, stroke_id, char_id, x, y FROM Point WHERE (Id = @Id)";
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(int Id, int char_id, int type) {
+        public virtual int Insert(int Id, string char_name, int type) {
             this.Adapter.InsertCommand.Parameters[0].Value = ((int)(Id));
-            this.Adapter.InsertCommand.Parameters[1].Value = ((int)(char_id));
+            if ((char_name == null)) {
+                throw new global::System.ArgumentNullException("char_name");
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[1].Value = ((string)(char_name));
+            }
             this.Adapter.InsertCommand.Parameters[2].Value = ((int)(type));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
             if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -2820,12 +2826,22 @@ SELECT Id, stroke_id, char_id, x, y FROM Point WHERE (Id = @Id)";
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(int Id, int char_id, int type, int Original_Id, int Original_char_id, int Original_type) {
+        public virtual int Update(int Id, string char_name, int type, int Original_Id, string Original_char_name, int Original_type) {
             this.Adapter.UpdateCommand.Parameters[0].Value = ((int)(Id));
-            this.Adapter.UpdateCommand.Parameters[1].Value = ((int)(char_id));
+            if ((char_name == null)) {
+                throw new global::System.ArgumentNullException("char_name");
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[1].Value = ((string)(char_name));
+            }
             this.Adapter.UpdateCommand.Parameters[2].Value = ((int)(type));
             this.Adapter.UpdateCommand.Parameters[3].Value = ((int)(Original_Id));
-            this.Adapter.UpdateCommand.Parameters[4].Value = ((int)(Original_char_id));
+            if ((Original_char_name == null)) {
+                throw new global::System.ArgumentNullException("Original_char_name");
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[4].Value = ((string)(Original_char_name));
+            }
             this.Adapter.UpdateCommand.Parameters[5].Value = ((int)(Original_type));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
             if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -2847,8 +2863,8 @@ SELECT Id, stroke_id, char_id, x, y FROM Point WHERE (Id = @Id)";
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(int char_id, int type, int Original_Id, int Original_char_id, int Original_type) {
-            return this.Update(Original_Id, char_id, type, Original_Id, Original_char_id, Original_type);
+        public virtual int Update(int type, int Original_Id, string Original_char_name, int Original_type) {
+            return this.Update(Original_Id, Original_char_name, type, Original_Id, Original_char_name, Original_type);
         }
     }
     

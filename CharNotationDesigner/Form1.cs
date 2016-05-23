@@ -13,7 +13,7 @@ namespace CharNotationDesigner
     public partial class Form1 : Form
     {
         //公共变量
-        BindingList<Char> bindingListChar;  //显示在左边的减字列表
+        DataTranslator dataTranslator;  //用于与数据库交换数据
         List<Stroke> basicStrokes;
         CharEditor charEditor;
         int currentListIndex;
@@ -22,10 +22,6 @@ namespace CharNotationDesigner
         public Form1()
         {
             InitializeComponent();
-            //新建一个binding绑到listbox上
-            bindingListChar = new BindingList<Char>();
-            lstChar.DataSource = bindingListChar;
-            lstChar.DisplayMember = "CharName";
 
             //准备编辑区域内容
             basicStrokes = BasicStrokesInit(); //基础笔画部件
@@ -37,6 +33,11 @@ namespace CharNotationDesigner
             Stroke.setWidth(3, 15);
             charEditor = new CharEditor();
             mouseDown = false;
+
+            dataTranslator = new DataTranslator();
+
+            lstChar.DataSource = dataTranslator.CharTable;
+            lstChar.DisplayMember = "char_name";
         }
         /// <summary>
         /// 减字列表选择条目变化
@@ -62,13 +63,18 @@ namespace CharNotationDesigner
                     return;
             }
             currentListIndex = lstChar.SelectedIndex;
-            Char charCurrent = lstChar.SelectedItem as Char;
+            CharNotationDataSet.CharRow currentRow = null;
+            if (lstChar.SelectedItem != null)
+                currentRow = (CharNotationDataSet.CharRow)(lstChar.SelectedItem as DataRowView).Row;
+            //Char charCurrent = lstChar.SelectedItem as Char;
+            Char charCurrent = null;
+            if (currentRow != null)
+                charCurrent = dataTranslator.GetChar(currentRow);
             //列表非空时必然会选择其中一项；但要避免出现空列表的情况
             if (charCurrent != null)    
             {
                 charEditor = new CharEditor(charCurrent.Clone() as Char);
-                //charEditor.Strokes = charCurrent.CloneStrokes();
-                //charEditor.Rect = charCurrent.CloneRect();
+
                 charEditor.ResetModifyStatus();
 
                 txtName.Text = charEditor.Name;
@@ -105,12 +111,13 @@ namespace CharNotationDesigner
             //检查列表是否重复
             foreach (var item in lstChar.Items)
             {
-                if ((item as Char).Name == txtName.Text)
+                CharNotationDataSet.CharRow currentRow = (CharNotationDataSet.CharRow)(item as DataRowView).Row;
+                if (currentRow.name.Trim() == txtName.Text)
                 {
                     toolTipWarning.Show("名称已存在", txtName, 1000);
                     return;
                 }
-                else if ((item as Char).CharName == txtCharName.Text)
+                else if (currentRow.char_name.Trim() == txtCharName.Text)
                 {
                     toolTipWarning.Show("名称已存在", txtCharName, 1000);
                     return;
@@ -122,7 +129,8 @@ namespace CharNotationDesigner
             charEditor.Segment = (int)numUDSegment.Value;
             charEditor.ResetModifyStatus();
             Char charTemp = charEditor.Clone() as Char;
-            bindingListChar.Add(charTemp);
+            dataTranslator.AddChar(charTemp);
+            lstChar.SelectedIndex = lstChar.FindStringExact(charEditor.CharName);
         }
         /// <summary>
         /// 点击“修改减字”按钮
@@ -143,15 +151,20 @@ namespace CharNotationDesigner
                 return;
             }
             //取得当前选择的减字位置
-            int index = bindingListChar.IndexOf(lstChar.SelectedItem as Char);
-            if (index == -1)    //列表中不存在对应减字（列表为空）
-                return;
+            //int index = bindingListChar.IndexOf(lstChar.SelectedItem as Char);
+            //if (index == -1)    //列表中不存在对应减字（列表为空）
+            //    return;
+            CharNotationDataSet.CharRow currentRow = null;
+            if (lstChar.SelectedItem != null)
+                currentRow = (CharNotationDataSet.CharRow)(lstChar.SelectedItem as DataRowView).Row;
             charEditor.Name = txtName.Text;
             charEditor.CharName = txtCharName.Text;
             charEditor.Segment = (int)numUDSegment.Value;
-            bindingListChar[index] = charEditor.Clone() as Char;
+            //bindingListChar[index] = charEditor.Clone() as Char;
             charEditor.ResetModifyStatus();
-            bindingListChar.ResetBindings();    //bindingList内容已更改，以此通知listBox刷新
+            dataTranslator.ModChar(currentRow, charEditor.Clone() as Char);
+            lstChar.SelectedIndex = lstChar.FindStringExact(charEditor.CharName);
+            //bindingListChar.ResetBindings();    //bindingList内容已更改，以此通知listBox刷新
         }
         /// <summary>
         /// 搜索列表当中的减字并将其选中
@@ -186,7 +199,11 @@ namespace CharNotationDesigner
             {
                 return;
             }
-            bindingListChar.Remove(lstChar.SelectedItem as Char);
+            CharNotationDataSet.CharRow currentRow = null;
+            if (lstChar.SelectedItem != null)
+                currentRow = (CharNotationDataSet.CharRow)(lstChar.SelectedItem as DataRowView).Row;
+            dataTranslator.RemoveChar(currentRow);
+            //bindingListChar.Remove(lstChar.SelectedItem as Char);
         }
         /// <summary>
         /// 添加笔画
@@ -379,19 +396,36 @@ namespace CharNotationDesigner
             return result;
         }
 
-        private void charBindingNavigatorSaveItem_Click(object sender, EventArgs e)
+        private void btnUpdateData_Click(object sender, EventArgs e)
         {
-            this.Validate();
-            this.charBindingSource.EndEdit();
-            this.tableAdapterManager.UpdateAll(this.charNotationDataSet);
-
+            dataTranslator.Update();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            // TODO:  这行代码将数据加载到表“charNotationDataSet.Char”中。您可以根据需要移动或删除它。
-            this.charTableAdapter.Fill(this.charNotationDataSet.Char);
-
+            if (charEditor.IsModified)
+            {
+                DialogResult result = MessageBox.Show("当前减字尚未保存，是否离开？", "警告",
+                    System.Windows.Forms.MessageBoxButtons.YesNo);
+                if (result == System.Windows.Forms.DialogResult.No)
+                {
+                    e.Cancel = true;    //取消窗口关闭
+                    return;
+                }
+            }
+            if (dataTranslator.IsModified)
+            {
+                DialogResult result = MessageBox.Show("数据已修改而未更新，是否更新？", "警告",
+                    System.Windows.Forms.MessageBoxButtons.YesNoCancel);
+                if (result == System.Windows.Forms.DialogResult.Yes)
+                    dataTranslator.Update();
+                else if (result == System.Windows.Forms.DialogResult.Cancel)
+                {
+                    e.Cancel = true;    //取消窗口关闭
+                    return;
+                }
+            }
+            currentListIndex = -1;  //列表被清除时将不会选择任何一项
         }
     }
 }

@@ -90,6 +90,7 @@ namespace CharNotationDesigner
         public List<Stroke> Strokes
         {
             get { return strokes; }
+            set { strokes = new List<Stroke>(value); }
         }
         /// <summary>
         /// 获取内容框。

@@ -67,7 +67,7 @@ namespace CharNotationDesigner
         public strokeType Type
         {
             get { return type; }
-            set { type = value; Enum.GetName(typeof(strokeType), type); }
+            set { type = value; }
         }
         /// <summary>
         /// 获取笔画名称。
@@ -84,6 +84,7 @@ namespace CharNotationDesigner
         public List<PointF> Points
         {
             get { return points; }
+            set { points = new List<PointF>(value); }
         }
         /// <summary>
         /// 获取或设置当前选择点的索引。

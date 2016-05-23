@@ -56,6 +56,7 @@
             this.lbChooseStroke = new System.Windows.Forms.Label();
             this.picBoxEditor = new System.Windows.Forms.PictureBox();
             this.toolTipWarning = new System.Windows.Forms.ToolTip(this.components);
+            this.btnUpdateData = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numUDSegment)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBoxEditor)).BeginInit();
             this.SuspendLayout();
@@ -66,9 +67,9 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.lstChar.FormattingEnabled = true;
             this.lstChar.ItemHeight = 12;
-            this.lstChar.Location = new System.Drawing.Point(12, 36);
+            this.lstChar.Location = new System.Drawing.Point(12, 43);
             this.lstChar.Name = "lstChar";
-            this.lstChar.Size = new System.Drawing.Size(60, 364);
+            this.lstChar.Size = new System.Drawing.Size(60, 328);
             this.lstChar.Sorted = true;
             this.lstChar.TabIndex = 12;
             this.toolTip1.SetToolTip(this.lstChar, "指法减字列表。\r\n该列表显示存在数据库当中的减字部件。");
@@ -169,9 +170,9 @@
             // 
             this.btnAddChar.Location = new System.Drawing.Point(82, 377);
             this.btnAddChar.Name = "btnAddChar";
-            this.btnAddChar.Size = new System.Drawing.Size(82, 23);
+            this.btnAddChar.Size = new System.Drawing.Size(68, 23);
             this.btnAddChar.TabIndex = 8;
-            this.btnAddChar.Text = "<< 添加减字";
+            this.btnAddChar.Text = "添加减字";
             this.toolTip1.SetToolTip(this.btnAddChar, "将当前减字添加到库中");
             this.btnAddChar.UseVisualStyleBackColor = true;
             this.btnAddChar.Click += new System.EventHandler(this.btnAddChar_Click);
@@ -211,7 +212,7 @@
             // 
             // btnModChar
             // 
-            this.btnModChar.Location = new System.Drawing.Point(170, 377);
+            this.btnModChar.Location = new System.Drawing.Point(156, 377);
             this.btnModChar.Name = "btnModChar";
             this.btnModChar.Size = new System.Drawing.Size(68, 23);
             this.btnModChar.TabIndex = 9;
@@ -349,11 +350,23 @@
             // 
             this.toolTipWarning.IsBalloon = true;
             // 
+            // btnUpdateData
+            // 
+            this.btnUpdateData.Location = new System.Drawing.Point(12, 377);
+            this.btnUpdateData.Name = "btnUpdateData";
+            this.btnUpdateData.Size = new System.Drawing.Size(60, 23);
+            this.btnUpdateData.TabIndex = 23;
+            this.btnUpdateData.Text = "更新";
+            this.toolTip1.SetToolTip(this.btnUpdateData, "将修改更新到数据库中。");
+            this.btnUpdateData.UseVisualStyleBackColor = true;
+            this.btnUpdateData.Click += new System.EventHandler(this.btnUpdateData_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(355, 409);
+            this.Controls.Add(this.btnUpdateData);
             this.Controls.Add(this.numUDSegment);
             this.Controls.Add(this.lbSegment);
             this.Controls.Add(this.chkRectBottom);
@@ -384,6 +397,7 @@
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "减字设计器";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.numUDSegment)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBoxEditor)).EndInit();
             this.ResumeLayout(false);
@@ -420,6 +434,7 @@
         private System.Windows.Forms.CheckBox chkRectBottom;
         private System.Windows.Forms.Label lbSegment;
         private System.Windows.Forms.NumericUpDown numUDSegment;
+        private System.Windows.Forms.Button btnUpdateData;
     }
 }
 
