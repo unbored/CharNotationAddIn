@@ -1837,7 +1837,7 @@ namespace CharNotationDesigner.CharNotationDataSetTableAdapters {
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [Char] WHERE (([name] = @Original_name) AND ([char_name] = @Original_char_name) AND ([segment] = @Original_segment) AND ([rect_resrict_top] = @Original_rect_resrict_top) AND ([rect_restrict_bottom] = @Original_rect_restrict_bottom) AND ([is_main] = @Original_is_main) AND ([is_complex] = @Original_is_complex) AND ([restrict_bottom] = @Original_restrict_bottom) AND ([restrict_top] = @Original_restrict_top))";
+            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [dbo].[Char] WHERE (([name] = @Original_name) AND ([char_name] = @Original_char_name) AND ([segment] = @Original_segment) AND ([rect_resrict_top] = @Original_rect_resrict_top) AND ([rect_restrict_bottom] = @Original_rect_restrict_bottom) AND ([is_main] = @Original_is_main) AND ([is_complex] = @Original_is_complex) AND ([restrict_top] = @Original_restrict_top) AND ([restrict_bottom] = @Original_restrict_bottom))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_name", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "name", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_char_name", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "char_name", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
@@ -1846,12 +1846,12 @@ namespace CharNotationDesigner.CharNotationDataSetTableAdapters {
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_rect_restrict_bottom", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "rect_restrict_bottom", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_is_main", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "is_main", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_is_complex", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "is_complex", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_restrict_bottom", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "restrict_bottom", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_restrict_top", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "restrict_top", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_restrict_bottom", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "restrict_bottom", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = @"INSERT INTO [Char] ([name], [char_name], [segment], [rect_resrict_top], [rect_restrict_bottom], [is_main], [is_complex], [restrict_bottom], [restrict_top]) VALUES (@name, @char_name, @segment, @rect_resrict_top, @rect_restrict_bottom, @is_main, @is_complex, @restrict_bottom, @restrict_top);
-SELECT name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_main, is_complex, restrict_bottom, restrict_top FROM Char WHERE (char_name = @char_name)";
+            this._adapter.InsertCommand.CommandText = @"INSERT INTO [dbo].[Char] ([name], [char_name], [segment], [rect_resrict_top], [rect_restrict_bottom], [is_main], [is_complex], [restrict_top], [restrict_bottom]) VALUES (@name, @char_name, @segment, @rect_resrict_top, @rect_restrict_bottom, @is_main, @is_complex, @restrict_top, @restrict_bottom);
+SELECT name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_main, is_complex, restrict_top, restrict_bottom FROM Char WHERE (char_name = @char_name)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@name", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "name", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@char_name", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "char_name", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -1860,12 +1860,12 @@ SELECT name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_main
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@rect_restrict_bottom", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "rect_restrict_bottom", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@is_main", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "is_main", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@is_complex", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "is_complex", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@restrict_bottom", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "restrict_bottom", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@restrict_top", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "restrict_top", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@restrict_bottom", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "restrict_bottom", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE [Char] SET [name] = @name, [char_name] = @char_name, [segment] = @segment, [rect_resrict_top] = @rect_resrict_top, [rect_restrict_bottom] = @rect_restrict_bottom, [is_main] = @is_main, [is_complex] = @is_complex, [restrict_bottom] = @restrict_bottom, [restrict_top] = @restrict_top WHERE (([name] = @Original_name) AND ([char_name] = @Original_char_name) AND ([segment] = @Original_segment) AND ([rect_resrict_top] = @Original_rect_resrict_top) AND ([rect_restrict_bottom] = @Original_rect_restrict_bottom) AND ([is_main] = @Original_is_main) AND ([is_complex] = @Original_is_complex) AND ([restrict_bottom] = @Original_restrict_bottom) AND ([restrict_top] = @Original_restrict_top));
-SELECT name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_main, is_complex, restrict_bottom, restrict_top FROM Char WHERE (char_name = @char_name)";
+            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[Char] SET [name] = @name, [char_name] = @char_name, [segment] = @segment, [rect_resrict_top] = @rect_resrict_top, [rect_restrict_bottom] = @rect_restrict_bottom, [is_main] = @is_main, [is_complex] = @is_complex, [restrict_top] = @restrict_top, [restrict_bottom] = @restrict_bottom WHERE (([name] = @Original_name) AND ([char_name] = @Original_char_name) AND ([segment] = @Original_segment) AND ([rect_resrict_top] = @Original_rect_resrict_top) AND ([rect_restrict_bottom] = @Original_rect_restrict_bottom) AND ([is_main] = @Original_is_main) AND ([is_complex] = @Original_is_complex) AND ([restrict_top] = @Original_restrict_top) AND ([restrict_bottom] = @Original_restrict_bottom));
+SELECT name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_main, is_complex, restrict_top, restrict_bottom FROM Char WHERE (char_name = @char_name)";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@name", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "name", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@char_name", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "char_name", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -1874,8 +1874,8 @@ SELECT name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_main
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@rect_restrict_bottom", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "rect_restrict_bottom", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@is_main", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "is_main", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@is_complex", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "is_complex", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@restrict_bottom", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "restrict_bottom", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@restrict_top", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "restrict_top", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@restrict_bottom", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "restrict_bottom", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_name", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "name", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_char_name", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "char_name", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_segment", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "segment", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
@@ -1883,8 +1883,8 @@ SELECT name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_main
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_rect_restrict_bottom", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "rect_restrict_bottom", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_is_main", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "is_main", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_is_complex", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "is_complex", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_restrict_bottom", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "restrict_bottom", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_restrict_top", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "restrict_top", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_restrict_bottom", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "restrict_bottom", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1901,7 +1901,7 @@ SELECT name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_main
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
             this._commandCollection[0].CommandText = "SELECT name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_main," +
-                " is_complex, restrict_bottom, restrict_top FROM Char";
+                " is_complex, restrict_top, restrict_bottom FROM dbo.Char";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
         }
         
@@ -1962,7 +1962,7 @@ SELECT name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_main
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(string Original_name, string Original_char_name, int Original_segment, bool Original_rect_resrict_top, bool Original_rect_restrict_bottom, bool Original_is_main, bool Original_is_complex, bool Original_restrict_bottom, bool Original_restrict_top) {
+        public virtual int Delete(string Original_name, string Original_char_name, int Original_segment, bool Original_rect_resrict_top, bool Original_rect_restrict_bottom, bool Original_is_main, bool Original_is_complex, bool Original_restrict_top, bool Original_restrict_bottom) {
             if ((Original_name == null)) {
                 throw new global::System.ArgumentNullException("Original_name");
             }
@@ -1980,8 +1980,8 @@ SELECT name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_main
             this.Adapter.DeleteCommand.Parameters[4].Value = ((bool)(Original_rect_restrict_bottom));
             this.Adapter.DeleteCommand.Parameters[5].Value = ((bool)(Original_is_main));
             this.Adapter.DeleteCommand.Parameters[6].Value = ((bool)(Original_is_complex));
-            this.Adapter.DeleteCommand.Parameters[7].Value = ((bool)(Original_restrict_bottom));
-            this.Adapter.DeleteCommand.Parameters[8].Value = ((bool)(Original_restrict_top));
+            this.Adapter.DeleteCommand.Parameters[7].Value = ((bool)(Original_restrict_top));
+            this.Adapter.DeleteCommand.Parameters[8].Value = ((bool)(Original_restrict_bottom));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
             if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -2002,7 +2002,7 @@ SELECT name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_main
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(string name, string char_name, int segment, bool rect_resrict_top, bool rect_restrict_bottom, bool is_main, bool is_complex, bool restrict_bottom, bool restrict_top) {
+        public virtual int Insert(string name, string char_name, int segment, bool rect_resrict_top, bool rect_restrict_bottom, bool is_main, bool is_complex, bool restrict_top, bool restrict_bottom) {
             if ((name == null)) {
                 throw new global::System.ArgumentNullException("name");
             }
@@ -2020,8 +2020,8 @@ SELECT name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_main
             this.Adapter.InsertCommand.Parameters[4].Value = ((bool)(rect_restrict_bottom));
             this.Adapter.InsertCommand.Parameters[5].Value = ((bool)(is_main));
             this.Adapter.InsertCommand.Parameters[6].Value = ((bool)(is_complex));
-            this.Adapter.InsertCommand.Parameters[7].Value = ((bool)(restrict_bottom));
-            this.Adapter.InsertCommand.Parameters[8].Value = ((bool)(restrict_top));
+            this.Adapter.InsertCommand.Parameters[7].Value = ((bool)(restrict_top));
+            this.Adapter.InsertCommand.Parameters[8].Value = ((bool)(restrict_bottom));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
             if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -2050,8 +2050,8 @@ SELECT name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_main
                     bool rect_restrict_bottom, 
                     bool is_main, 
                     bool is_complex, 
-                    bool restrict_bottom, 
                     bool restrict_top, 
+                    bool restrict_bottom, 
                     string Original_name, 
                     string Original_char_name, 
                     int Original_segment, 
@@ -2059,8 +2059,8 @@ SELECT name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_main
                     bool Original_rect_restrict_bottom, 
                     bool Original_is_main, 
                     bool Original_is_complex, 
-                    bool Original_restrict_bottom, 
-                    bool Original_restrict_top) {
+                    bool Original_restrict_top, 
+                    bool Original_restrict_bottom) {
             if ((name == null)) {
                 throw new global::System.ArgumentNullException("name");
             }
@@ -2078,8 +2078,8 @@ SELECT name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_main
             this.Adapter.UpdateCommand.Parameters[4].Value = ((bool)(rect_restrict_bottom));
             this.Adapter.UpdateCommand.Parameters[5].Value = ((bool)(is_main));
             this.Adapter.UpdateCommand.Parameters[6].Value = ((bool)(is_complex));
-            this.Adapter.UpdateCommand.Parameters[7].Value = ((bool)(restrict_bottom));
-            this.Adapter.UpdateCommand.Parameters[8].Value = ((bool)(restrict_top));
+            this.Adapter.UpdateCommand.Parameters[7].Value = ((bool)(restrict_top));
+            this.Adapter.UpdateCommand.Parameters[8].Value = ((bool)(restrict_bottom));
             if ((Original_name == null)) {
                 throw new global::System.ArgumentNullException("Original_name");
             }
@@ -2097,8 +2097,8 @@ SELECT name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_main
             this.Adapter.UpdateCommand.Parameters[13].Value = ((bool)(Original_rect_restrict_bottom));
             this.Adapter.UpdateCommand.Parameters[14].Value = ((bool)(Original_is_main));
             this.Adapter.UpdateCommand.Parameters[15].Value = ((bool)(Original_is_complex));
-            this.Adapter.UpdateCommand.Parameters[16].Value = ((bool)(Original_restrict_bottom));
-            this.Adapter.UpdateCommand.Parameters[17].Value = ((bool)(Original_restrict_top));
+            this.Adapter.UpdateCommand.Parameters[16].Value = ((bool)(Original_restrict_top));
+            this.Adapter.UpdateCommand.Parameters[17].Value = ((bool)(Original_restrict_bottom));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
             if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -2126,8 +2126,8 @@ SELECT name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_main
                     bool rect_restrict_bottom, 
                     bool is_main, 
                     bool is_complex, 
-                    bool restrict_bottom, 
                     bool restrict_top, 
+                    bool restrict_bottom, 
                     string Original_name, 
                     string Original_char_name, 
                     int Original_segment, 
@@ -2135,9 +2135,9 @@ SELECT name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_main
                     bool Original_rect_restrict_bottom, 
                     bool Original_is_main, 
                     bool Original_is_complex, 
-                    bool Original_restrict_bottom, 
-                    bool Original_restrict_top) {
-            return this.Update(name, Original_char_name, segment, rect_resrict_top, rect_restrict_bottom, is_main, is_complex, restrict_bottom, restrict_top, Original_name, Original_char_name, Original_segment, Original_rect_resrict_top, Original_rect_restrict_bottom, Original_is_main, Original_is_complex, Original_restrict_bottom, Original_restrict_top);
+                    bool Original_restrict_top, 
+                    bool Original_restrict_bottom) {
+            return this.Update(name, Original_char_name, segment, rect_resrict_top, rect_restrict_bottom, is_main, is_complex, restrict_top, restrict_bottom, Original_name, Original_char_name, Original_segment, Original_rect_resrict_top, Original_rect_restrict_bottom, Original_is_main, Original_is_complex, Original_restrict_top, Original_restrict_bottom);
         }
     }
     
