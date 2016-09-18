@@ -1,6 +1,6 @@
-﻿namespace CharNotationDesigner
+﻿namespace CharNotation
 {
-    partial class Form1
+    partial class FormDesigner
     {
         /// <summary>
         /// 必需的设计器变量。
@@ -16,6 +16,8 @@
             if (disposing && (components != null))
             {
                 components.Dispose();
+                charEditor.Dispose();
+                dataTranslator.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -53,10 +55,10 @@
             this.chkRectBottom = new System.Windows.Forms.CheckBox();
             this.lbSegment = new System.Windows.Forms.Label();
             this.numUDSegment = new System.Windows.Forms.NumericUpDown();
+            this.btnUpdateData = new System.Windows.Forms.Button();
             this.lbChooseStroke = new System.Windows.Forms.Label();
             this.picBoxEditor = new System.Windows.Forms.PictureBox();
             this.toolTipWarning = new System.Windows.Forms.ToolTip(this.components);
-            this.btnUpdateData = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numUDSegment)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBoxEditor)).BeginInit();
             this.SuspendLayout();
@@ -325,6 +327,17 @@
             this.numUDSegment.TabIndex = 22;
             this.toolTip1.SetToolTip(this.numUDSegment, "指示减字占多少行横行空间。\r\n该值用于分配笔画间距以使减字看起来更匀称。\r\n");
             // 
+            // btnUpdateData
+            // 
+            this.btnUpdateData.Location = new System.Drawing.Point(12, 377);
+            this.btnUpdateData.Name = "btnUpdateData";
+            this.btnUpdateData.Size = new System.Drawing.Size(60, 23);
+            this.btnUpdateData.TabIndex = 23;
+            this.btnUpdateData.Text = "更新";
+            this.toolTip1.SetToolTip(this.btnUpdateData, "将修改更新到数据库中。");
+            this.btnUpdateData.UseVisualStyleBackColor = true;
+            this.btnUpdateData.Click += new System.EventHandler(this.btnUpdateData_Click);
+            // 
             // lbChooseStroke
             // 
             this.lbChooseStroke.AutoSize = true;
@@ -336,6 +349,7 @@
             // 
             // picBoxEditor
             // 
+            this.picBoxEditor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.picBoxEditor.Location = new System.Drawing.Point(82, 124);
             this.picBoxEditor.Name = "picBoxEditor";
             this.picBoxEditor.Size = new System.Drawing.Size(200, 200);
@@ -349,17 +363,6 @@
             // toolTipWarning
             // 
             this.toolTipWarning.IsBalloon = true;
-            // 
-            // btnUpdateData
-            // 
-            this.btnUpdateData.Location = new System.Drawing.Point(12, 377);
-            this.btnUpdateData.Name = "btnUpdateData";
-            this.btnUpdateData.Size = new System.Drawing.Size(60, 23);
-            this.btnUpdateData.TabIndex = 23;
-            this.btnUpdateData.Text = "更新";
-            this.toolTip1.SetToolTip(this.btnUpdateData, "将修改更新到数据库中。");
-            this.btnUpdateData.UseVisualStyleBackColor = true;
-            this.btnUpdateData.Click += new System.EventHandler(this.btnUpdateData_Click);
             // 
             // Form1
             // 

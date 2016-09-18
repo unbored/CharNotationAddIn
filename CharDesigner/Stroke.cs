@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
-namespace CharNotationDesigner
+namespace CharNotation
 {
     /// <summary>
     /// 笔画名称枚举。
     /// <para>笔画列表：横，无头横，竖，无头竖，撇，捺，无头捺，点，提，点提（氵专用），横折，横折钩，横折弯钩，横折撇，竖勾，竖弯钩</para>
     /// </summary>
-    enum strokeType { 横, 无头横, 竖, 无头竖, 撇, 无头撇, 捺, 无头捺, 点, 提, 点提, 横折, 横折钩, 横折弯钩, 横折撇, 竖勾, 竖弯钩 };
+    public enum strokeType { 横, 无头横, 竖, 无头竖, 撇, 无头撇, 捺, 无头捺, 点, 提, 点提, 横折, 横折钩, 横折弯钩, 横折撇, 竖勾, 竖弯钩 };
 
     /// <summary>
     /// 笔画类。
     /// </summary>
-    class Stroke : ICloneable
+    public class Stroke : ICloneable
     {
         static float widththin, widththick;
         strokeType type;

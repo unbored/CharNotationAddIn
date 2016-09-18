@@ -10,7 +10,7 @@
 
 #pragma warning disable 1591
 
-namespace CharNotationDesigner {
+namespace CharNotation {
     
     
     /// <summary>
@@ -1701,7 +1701,7 @@ namespace CharNotationDesigner {
         }
     }
 }
-namespace CharNotationDesigner.CharNotationDataSetTableAdapters {
+namespace CharNotation.CharNotationDataSetTableAdapters {
     
     
     /// <summary>
@@ -1891,7 +1891,7 @@ SELECT name, char_name, segment, rect_resrict_top, rect_restrict_bottom, is_main
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitConnection() {
             this._connection = new global::System.Data.SqlClient.SqlConnection();
-            this._connection.ConnectionString = global::CharNotationDesigner.Properties.Settings.Default.CharNotationDataConnectionString;
+            this._connection.ConnectionString = global::CharNotation.Properties.Settings.Default.CharNotationDataConnectionString;
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2313,7 +2313,7 @@ SELECT Id, stroke_id, char_name, x, y FROM Point WHERE (Id = @Id) AND (char_name
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitConnection() {
             this._connection = new global::System.Data.SqlClient.SqlConnection();
-            this._connection.ConnectionString = global::CharNotationDesigner.Properties.Settings.Default.CharNotationDataConnectionString;
+            this._connection.ConnectionString = global::CharNotation.Properties.Settings.Default.CharNotationDataConnectionString;
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2698,7 +2698,7 @@ SELECT Id, char_name, type FROM Stroke WHERE (Id = @Id) AND (char_name = @char_n
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitConnection() {
             this._connection = new global::System.Data.SqlClient.SqlConnection();
-            this._connection.ConnectionString = global::CharNotationDesigner.Properties.Settings.Default.CharNotationDataConnectionString;
+            this._connection.ConnectionString = global::CharNotation.Properties.Settings.Default.CharNotationDataConnectionString;
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

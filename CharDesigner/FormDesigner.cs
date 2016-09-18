@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace CharNotationDesigner
+namespace CharNotation
 {
-    public partial class Form1 : Form
+    public partial class FormDesigner : Form
     {
         //公共变量
         DataTranslator dataTranslator;  //用于与数据库交换数据
@@ -19,7 +15,7 @@ namespace CharNotationDesigner
         int currentListIndex;
         bool mouseDown; //记录鼠标是否按下
 
-        public Form1()
+        public FormDesigner()
         {
             InitializeComponent();
 
@@ -292,6 +288,8 @@ namespace CharNotationDesigner
         /// <param name="e"></param>
         private void picBoxEditor_Paint(object sender, PaintEventArgs e)
         {
+            Graphics g = e.Graphics;
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             //绘制背景（相当于刷新）
             charEditor.DrawBackground(e.Graphics);
             //绘制笔画

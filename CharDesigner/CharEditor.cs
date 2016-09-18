@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Windows.Forms;
 
-namespace CharNotationDesigner
+namespace CharNotation
 {
     /// <summary>
     /// 减字设计器类。继承自Char类。
     /// </summary>
-    class CharEditor : Char
+    class CharEditor : Char, IDisposable
     {
         int selectedStrokeIndex;   //指示当前选择的笔画下标
         int selectedRectIndex;  //指示当前选择的矩形框角
@@ -57,7 +55,8 @@ namespace CharNotationDesigner
         }
         ~CharEditor()
         {
-            imgBackground.Dispose();
+            //imgBackground.Dispose();
+            Dispose(false);
         }
         /// <summary>
         /// 获取设计器内容是否已经更改的标识。
@@ -193,6 +192,7 @@ namespace CharNotationDesigner
         {
             Font font = new Font("方正清刻本悦宋简体", 153);
             Graphics g = Graphics.FromImage(imgBackground);   //从img创建
+            g.SmoothingMode = SmoothingMode.AntiAlias;
             g.Clear(Color.White);
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
             g.DrawString(text, font, Brushes.LightGray, -36, -3);
@@ -267,7 +267,9 @@ namespace CharNotationDesigner
         /// <summary>
         /// 设置当前选中的点的坐标。
         /// </summary>
-        /// <param name="p"></param>
+        /// <param name="p">
+        /// 输入点坐标
+        /// </param>
         public void SetCurrentPointPos(Point p)
         {
             if (selectedStrokeIndex >= 0)
@@ -286,5 +288,41 @@ namespace CharNotationDesigner
         {
             modified = false;
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // 要检测冗余调用
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: 释放托管状态(托管对象)。
+                    imgBackground.Dispose();
+                }
+
+                // TODO: 释放未托管的资源(未托管的对象)并在以下内容中替代终结器。
+                // TODO: 将大型字段设置为 null。
+
+                disposedValue = true;
+            }
+        }
+
+        // TODO: 仅当以上 Dispose(bool disposing) 拥有用于释放未托管资源的代码时才替代终结器。
+        // ~CharEditor() {
+        //   // 请勿更改此代码。将清理代码放入以上 Dispose(bool disposing) 中。
+        //   Dispose(false);
+        // }
+
+        // 添加此代码以正确实现可处置模式。
+        public void Dispose()
+        {
+            // 请勿更改此代码。将清理代码放入以上 Dispose(bool disposing) 中。
+            Dispose(true);
+            // TODO: 如果在以上内容中替代了终结器，则取消注释以下行。
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

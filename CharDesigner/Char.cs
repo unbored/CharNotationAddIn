@@ -1,23 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Drawing;
 
-namespace CharNotationDesigner
+namespace CharNotation
 {
     /// <summary>
     /// 主减字用于容纳其他减字的容器。
     /// </summary>
-    struct Container
+    public struct Container
     {
         public PointF[] corners;    //指定了矩形框的两个顶点
         public bool restrictTop;    //指定了容器上方的限制
         public bool restrictBottom; //指定了容器下方的限制
     }
 
-    class Char : ICloneable
+    public class Char : ICloneable
     {
 
         protected string name;
